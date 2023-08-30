@@ -93,7 +93,7 @@ fun CurrentTime(color: Color) {
 
     LaunchedEffect(now) {
         while (true) {
-            delay(1)
+            delay(16)
             now = LocalDateTime.now()
         }
     }
