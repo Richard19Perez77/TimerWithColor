@@ -1,7 +1,9 @@
 package com.compose.timerwithcolor
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -22,6 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
 import com.compose.timerwithcolor.ui.theme.MikuLightGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
@@ -35,9 +40,40 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class MainActivity : ComponentActivity() {
+
+    /**
+     * Set up the window to hide the status and navigation bars
+     */
+    private fun setupWindow() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
+    // Call this function in your activity's onCreate method
+    private fun setFullscreen(activity: Activity) {
+        // Hide the status and navigation bar
+        setupWindow()
+
+        // Check if we are in immersive mode. If not, enter it
+        @Suppress("DEPRECATION")
+        activity.window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_IMMERSIVE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
+
+    }
+
+
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setFullscreen(this)
         setContent {
             TimerWithColorTheme {
                 // A surface container using the 'background' color from the theme
@@ -71,7 +107,7 @@ class MainActivity : ComponentActivity() {
                             // Update the UI with the new time
                             val (a, b) = res
                             color = a
-                            color1  = b
+                            color1 = b
                         }
                     }
 
