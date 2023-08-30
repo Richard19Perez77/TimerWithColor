@@ -20,11 +20,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
 import com.compose.timerwithcolor.ui.theme.MikuLightGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
 import com.compose.timerwithcolor.ui.theme.TimerWithColorTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
@@ -47,19 +51,27 @@ class MainActivity : ComponentActivity() {
                     var color1 by remember { mutableStateOf(MikuPink) }
 
                     LaunchedEffect(isPressed) {
-                        while (isPressed) {
-                            color = Color(
-                                red = Random.nextInt(0..255),
-                                blue = Random.nextInt(0..255),
-                                green = Random.nextInt(0..255)
-                            )
-                            color1 = Color(
-                                red = Random.nextInt(0..255),
-                                blue = Random.nextInt(0..255),
-                                green = Random.nextInt(0..255)
-                            )
+                        flow {
+                            while (isPressed) {
+                                val a = Color(
+                                    red = Random.nextInt(0..255),
+                                    blue = Random.nextInt(0..255),
+                                    green = Random.nextInt(0..255)
+                                )
+                                val b = Color(
+                                    red = Random.nextInt(0..255),
+                                    blue = Random.nextInt(0..255),
+                                    green = Random.nextInt(0..255)
+                                )
 
-                            delay(16)
+                                emit(Pair(a, b))
+                                delay(16) // Update the time once per second
+                            }
+                        }.collectLatest { res ->
+                            // Update the UI with the new time
+                            val (a, b) = res
+                            color = a
+                            color1  = b
                         }
                     }
 
@@ -91,14 +103,20 @@ fun CurrentTime(color: Color) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     val formatter by remember { mutableStateOf(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) }
 
-    LaunchedEffect(now) {
-        while (true) {
-            delay(16)
-            now = LocalDateTime.now()
+    LaunchedEffect(Unit) {
+        flow {
+            while (true) {
+                emit(LocalDateTime.now())
+                delay(16) // Update the time once per second
+            }
+        }.collectLatest { time ->
+            // Update the UI with the new time
+            now = time
         }
     }
 
     Text(
+        style = TextStyle(fontSize = 30.sp),
         text = now.format(formatter),
         color = color
     )
