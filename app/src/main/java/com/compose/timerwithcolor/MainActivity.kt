@@ -8,6 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -69,7 +71,6 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFullscreen(this)
@@ -80,56 +81,69 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MikuLightGreen,
                 ) {
-
-                    var isPressed by remember { mutableStateOf(false) }
-                    var color by remember { mutableStateOf(MikuDarkGreen) }
-                    var color1 by remember { mutableStateOf(MikuPink) }
-
-                    LaunchedEffect(isPressed) {
-                        flow {
-                            while (isPressed) {
-                                val a = Color(
-                                    red = Random.nextInt(0..255),
-                                    blue = Random.nextInt(0..255),
-                                    green = Random.nextInt(0..255)
-                                )
-                                val b = Color(
-                                    red = Random.nextInt(0..255),
-                                    blue = Random.nextInt(0..255),
-                                    green = Random.nextInt(0..255)
-                                )
-
-                                emit(Pair(a, b))
-                                delay(16) // Update the time once per second
-                            }
-                        }.collectLatest { res ->
-                            // Update the UI with the new time
-                            val (a, b) = res
-                            color = a
-                            color1 = b
+                    Column(modifier = Modifier.fillMaxSize()){
+                        Row(modifier = Modifier.weight(1f)) {
+                            Section()
                         }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color
-                            )
-                            .pointerInteropFilter { event ->
-                                if (event.action == MotionEvent.ACTION_DOWN) {
-                                    isPressed = true
-                                } else if (event.action == MotionEvent.ACTION_UP) {
-                                    isPressed = false
-                                }
-                                true
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CurrentTime(color1)
+                        Row(modifier = Modifier.weight(1f)){
+                            Section()
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun Section() {
+    var isPressed by remember { mutableStateOf(false) }
+    var color by remember { mutableStateOf(MikuDarkGreen) }
+    var color1 by remember { mutableStateOf(MikuPink) }
+
+    LaunchedEffect(isPressed) {
+        flow {
+            while (isPressed) {
+                val a = Color(
+                    red = Random.nextInt(0..255),
+                    blue = Random.nextInt(0..255),
+                    green = Random.nextInt(0..255)
+                )
+                val b = Color(
+                    red = Random.nextInt(0..255),
+                    blue = Random.nextInt(0..255),
+                    green = Random.nextInt(0..255)
+                )
+
+                emit(Pair(a, b))
+                delay(16) // Update the time once per second
+            }
+        }.collectLatest { res ->
+            // Update the UI with the new time
+            val (a, b) = res
+            color = a
+            color1 = b
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                color
+            )
+            .pointerInteropFilter { event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    isPressed = true
+                } else if (event.action == MotionEvent.ACTION_UP) {
+                    isPressed = false
+                }
+                true
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        CurrentTime(color1)
     }
 }
 
