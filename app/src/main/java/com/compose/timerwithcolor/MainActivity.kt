@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                                 green = Random.nextInt(0..255)
                             )
 
-                            delay(1)
+                            delay(16)
                         }
                     }
 
