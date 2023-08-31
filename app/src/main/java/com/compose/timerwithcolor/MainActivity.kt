@@ -24,7 +24,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -81,11 +84,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MikuLightGreen,
                 ) {
-                    Column(modifier = Modifier.fillMaxSize()){
+                    Column(modifier = Modifier.fillMaxSize()) {
                         Row(modifier = Modifier.weight(1f)) {
                             Section()
                         }
-                        Row(modifier = Modifier.weight(1f)){
+                        Row(modifier = Modifier.weight(1f)) {
                             Section()
                         }
                     }
@@ -151,6 +154,12 @@ fun Section() {
 fun CurrentTime(color: Color) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     val formatter by remember { mutableStateOf(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) }
+    var textSize by remember { mutableStateOf(100.sp) }
+    var fitSet by remember { mutableStateOf(false) }
+
+    val localDensity = LocalDensity.current
+    val fontScaleFactor = LocalDensity.current.fontScale
+
 
     LaunchedEffect(Unit) {
         flow {
@@ -164,8 +173,39 @@ fun CurrentTime(color: Color) {
         }
     }
 
+
     Text(
-        style = TextStyle(fontSize = 30.sp),
+        modifier = Modifier
+            .onSizeChanged {
+                if (!fitSet) {
+                    val columnWidthDp = with(localDensity) { it.width.toDp() }
+                    val text = now.format(formatter)
+                    var fontSize = textSize * fontScaleFactor
+                    var result = android.graphics
+                        .Paint()
+                        .apply {
+                            this.textSize = fontSize.value
+                        }
+                        .measureText(text).dp
+
+                    while (result > columnWidthDp) {
+                        fontSize.value
+                            .dec()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = android.graphics
+                            .Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(text).dp
+                    }
+                    textSize = fontSize
+                    fitSet = true
+                }
+            },
+        style = TextStyle(fontSize = textSize),
         text = now.format(formatter),
         color = color
     )
