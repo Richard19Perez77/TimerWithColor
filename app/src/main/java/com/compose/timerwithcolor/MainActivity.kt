@@ -66,8 +66,14 @@ class MainActivity : ComponentActivity() {
         // Hide the status and navigation bar
         setupWindow()
 
-        // Check if we are in immersive mode. If not, enter it
-        @Suppress("DEPRECATION")
+        // TODO: test if working the same as deprecated code
+//        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+//        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+//        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+//        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
+
+        // TODO: update to WindowInsetsController
         activity.window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_IMMERSIVE
                     or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -75,7 +81,6 @@ class MainActivity : ComponentActivity() {
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_FULLSCREEN)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
