@@ -160,7 +160,6 @@ fun CurrentTime(color: Color) {
     val localDensity = LocalDensity.current
     val fontScaleFactor = LocalDensity.current.fontScale
 
-
     LaunchedEffect(Unit) {
         flow {
             while (true) {
@@ -172,7 +171,6 @@ fun CurrentTime(color: Color) {
             now = time
         }
     }
-
 
     Text(
         modifier = Modifier
@@ -207,6 +205,6 @@ fun CurrentTime(color: Color) {
             },
         style = TextStyle(fontSize = textSize),
         text = now.format(formatter),
-        color = color
+        color = color,
     )
 }
