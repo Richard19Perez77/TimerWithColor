@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,9 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
@@ -154,7 +158,7 @@ fun Section() {
 fun CurrentTime(color: Color) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     val formatter by remember { mutableStateOf(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) }
-    var textSize by remember { mutableStateOf(100.sp) }
+    var textSize by remember { mutableStateOf(0.sp) }
     var fitSet by remember { mutableStateOf(false) }
 
     val localDensity = LocalDensity.current
@@ -174,11 +178,12 @@ fun CurrentTime(color: Color) {
 
     Text(
         modifier = Modifier
+            git a.fillMaxWidth()
             .onSizeChanged {
                 if (!fitSet) {
                     val columnWidthDp = with(localDensity) { it.width.toDp() }
                     val text = now.format(formatter)
-                    var fontSize = textSize * fontScaleFactor
+                    var fontSize = TextUnit(100f * fontScaleFactor, TextUnitType.Sp)
                     var result = android.graphics
                         .Paint()
                         .apply {
@@ -203,7 +208,7 @@ fun CurrentTime(color: Color) {
                     fitSet = true
                 }
             },
-        style = TextStyle(fontSize = textSize),
+        style = TextStyle(fontSize = textSize, textAlign = TextAlign.Center),
         text = now.format(formatter),
         color = color,
     )
