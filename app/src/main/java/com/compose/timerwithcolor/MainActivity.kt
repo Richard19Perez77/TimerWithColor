@@ -98,8 +98,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Section() {
     var isPressed by remember { mutableStateOf(false) }
-    var color by remember { mutableStateOf(MikuDarkGreen) }
-    var color1 by remember { mutableStateOf(MikuPink) }
+    var bgColor by remember { mutableStateOf(MikuDarkGreen) }
+    var textColor by remember { mutableStateOf(MikuPink) }
 
     LaunchedEffect(isPressed) {
         flow {
@@ -121,8 +121,8 @@ fun Section() {
         }.collectLatest { res ->
             // Update the UI with the new time
             val (a, b) = res
-            color = a
-            color1 = b
+            bgColor = a
+            textColor = b
         }
     }
 
@@ -130,7 +130,7 @@ fun Section() {
         modifier = Modifier
             .fillMaxSize()
             .background(
-                color
+                bgColor
             )
             .pointerInteropFilter { event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -142,7 +142,7 @@ fun Section() {
             },
         contentAlignment = Alignment.Center
     ) {
-        CurrentTime(color1)
+        CurrentTime(textColor)
     }
 }
 
