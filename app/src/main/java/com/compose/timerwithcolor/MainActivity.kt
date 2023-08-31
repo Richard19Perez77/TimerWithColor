@@ -1,6 +1,7 @@
 package com.compose.timerwithcolor
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -50,38 +51,24 @@ import kotlin.random.nextInt
 
 class MainActivity : ComponentActivity() {
 
-    /**
-     * Set up the window to hide the status and navigation bars
-     */
-    private fun setupWindow() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            hide(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-    }
-
-    // Call this function in your activity's onCreate method
     private fun setFullscreen(activity: Activity) {
-        // Hide the status and navigation bar
-        setupWindow()
-
-        // TODO: test if working the same as deprecated code
-//        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-//        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-//        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-//        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
-//        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
-
-        // TODO: update to WindowInsetsController
-        @Suppress("DEPRECATION")
-        activity.window.decorView.systemUiVisibility =
-            (View.SYSTEM_UI_FLAG_IMMERSIVE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            WindowInsetsControllerCompat(window, window.decorView).apply {
+                hide(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
+                systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            activity.window.decorView.systemUiVisibility =
+                (View.SYSTEM_UI_FLAG_IMMERSIVE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +76,6 @@ class MainActivity : ComponentActivity() {
         setFullscreen(this)
         setContent {
             TimerWithColorTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MikuLightGreen,
