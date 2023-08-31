@@ -2,8 +2,11 @@
 
 Press Screen to Change Color and Watch Timer Run!
 
-![Screenshot_20230830_182354](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/9ac9cf08-55e4-4c7c-9e19-974882260569)
 
-![Screenshot_20230830_182402](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/240bca8d-6d2f-4509-956f-1e31e49a42de)
+https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/2e97a64e-c4c0-4e36-880f-33d005bf2e9f
 
-![Screenshot_20230830_182410](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/5871d3f6-4592-4837-9236-ae9c7fde3f13)
+![Screenshot_20230830_185827](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/c814f973-1571-4e4a-a735-7042dd3bdb33)
+
+![Screenshot_20230830_185837](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/37787703-8b0a-4834-85e6-f125546aa9a3)
+
+![Screenshot_20230830_185846](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/b8f1d65a-f15c-4645-8bfe-ae34de818e64)
