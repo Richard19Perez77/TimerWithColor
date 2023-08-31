@@ -178,7 +178,7 @@ fun CurrentTime(color: Color) {
 
     Text(
         modifier = Modifier
-            git a.fillMaxWidth()
+            .fillMaxWidth()
             .onSizeChanged {
                 if (!fitSet) {
                     val columnWidthDp = with(localDensity) { it.width.toDp() }
