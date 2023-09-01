@@ -2,6 +2,8 @@ package com.compose.timerwithcolor.ui.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
+import com.compose.timerwithcolor.ui.theme.MikuPink
 
 class SectionViewModel : ViewModel() {
 
@@ -9,4 +11,4 @@ class SectionViewModel : ViewModel() {
     var sections = mutableListOf<SectionState>()
 }
 
-data class SectionState(var isFlashing : Boolean  = false, var bgColor : Color, var textColor : Color)
+data class SectionState(val isFlashing : Boolean  = false, val bgColor : Color = MikuDarkGreen, val textColor : Color = MikuPink)
