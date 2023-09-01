@@ -3,6 +3,7 @@ package com.compose.timerwithcolor.ui
 import android.graphics.Paint
 import android.view.MotionEvent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,12 +69,19 @@ fun Section() {
         }
     }
 
+    // allow touch down and click handling for change colors
+    // can start touch in one box and still enable click in another with a separate touch
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 bgColor
             )
+            .clickable(
+                enabled = true,
+                onClick = {
+                    isPressed = !isPressed
+                })
             .pointerInteropFilter { event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     isPressed = true
