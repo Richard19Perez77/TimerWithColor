@@ -99,10 +99,10 @@ fun Section() {
 @Composable
 fun CurrentTime(color: Color) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
-    val formatter by remember { mutableStateOf(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) }
     var textSize by remember { mutableStateOf(0.sp) }
     var fitSet by remember { mutableStateOf(false) }
 
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
     val localDensity = LocalDensity.current
     val fontScaleFactor = LocalDensity.current.fontScale
 
