@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.compose.timerwithcolor.ui.model.SectionViewModel
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
 import kotlinx.coroutines.delay
@@ -39,10 +41,14 @@ import kotlin.random.nextInt
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Section() {
-    var isPressed by remember { mutableStateOf(false) }
-    var bgColor by remember { mutableStateOf(MikuDarkGreen) }
-    var textColor by remember { mutableStateOf(MikuPink) }
+fun Section(id: Int) {
+
+    val sectionViewModel: SectionViewModel = viewModel()
+    val sectionState = sectionViewModel.getSectionState(id)
+
+    var isPressed by remember { mutableStateOf(sectionState.value?.isFlashing ?: false) }
+    var bgColor by remember { mutableStateOf(sectionState.value?.bgColor ?: MikuDarkGreen) }
+    var textColor by remember { mutableStateOf(sectionState.value?.textColor ?: MikuPink) }
 
     LaunchedEffect(isPressed) {
         flow {
