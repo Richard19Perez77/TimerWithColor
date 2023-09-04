@@ -65,7 +65,7 @@ fun Section(id: Int) {
                 )
 
                 emit(Pair(a, b))
-                delay(16) // Update the time once per second
+                delay(16) // run color change at 60 fps
             }
         }.collectLatest { res ->
             // Update the UI with the new time
@@ -116,7 +116,7 @@ fun CurrentTime(color: Color) {
         flow {
             while (true) {
                 emit(LocalDateTime.now())
-                delay(16) // Update the time once per second
+                delay(16) // allot changes for 60fps
             }
         }.collectLatest { time ->
             // Update the UI with the new time
