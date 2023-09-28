@@ -124,6 +124,7 @@ fun CurrentTime(color: Color) {
         }
     }
 
+    // todo set in its own composable for font scaling
     Text(
         modifier = Modifier
             .fillMaxWidth()
