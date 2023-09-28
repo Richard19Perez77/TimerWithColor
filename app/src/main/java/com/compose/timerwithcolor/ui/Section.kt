@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.compose.timerwithcolor.ui.model.SectionViewModel
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
+import com.compose.timerwithcolor.ui.theme.MikuLightGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -80,6 +82,7 @@ fun Section(id: Int) {
     // can start touch in one box and still enable click in another with a separate touch
     Box(
         modifier = Modifier
+            .padding(0.dp)
             .fillMaxSize()
             .background(
                 bgColor
@@ -128,105 +131,51 @@ fun CurrentTime(color: Color) {
     // todo set in its own composable for font scaling
     Text(
         modifier = Modifier
-            .layout { measurable, constraints ->
-                println("Rick: layout called")
-
-                val placeable = measurable.measure(constraints)
-
+            .fillMaxWidth()
+            .padding(0.dp)
+            .onSizeChanged {
                 if (!fitSet) {
-                    println("Rick: set fit")
+                    val columnWidthDp = with(localDensity) { it.width.toDp() }
                     val text = now.format(formatter)
-
-                    val cWidth = with(localDensity) {
-                        placeable.width.toDp()
-                    }
                     var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
-                    var result = android.graphics
-                        .Paint()
+                    var result = Paint()
                         .apply {
                             this.textSize = fontSize.value
                         }
                         .measureText(text).dp
 
-                    while (result < cWidth) {
+                    while (result < columnWidthDp) {
                         fontSize.value
                             .inc()
-                            .also { v ->
-                                fontSize = v.sp
+                            .also { value ->
+                                fontSize = value.sp
                             }
-                        result = android.graphics
-                            .Paint()
+                        result = Paint()
                             .apply {
                                 this.textSize = (fontSize * fontScaleFactor).value
                             }
                             .measureText(text).dp
                     }
 
-                    while (result >= cWidth) {
+                    while (result >= columnWidthDp) {
                         fontSize.value
                             .dec()
-                            .also { v ->
-                                fontSize = v.sp
+                            .also { value ->
+                                fontSize = value.sp
                             }
-                        result = android.graphics
-                            .Paint()
+                        result = Paint()
                             .apply {
                                 this.textSize = (fontSize * fontScaleFactor).value
                             }
                             .measureText(text).dp
                     }
-
                     textSize = fontSize
-
                     fitSet = true
                 }
-
-                layout(placeable.width, placeable.height) {
-                    placeable.placeRelative(0, 0)
-                }
-            }
-            .fillMaxWidth()
-            .onSizeChanged {
-//                if (!fitSet) {
-//                    val columnWidthDp = with(localDensity) { it.width.toDp() }
-//                    val text = now.format(formatter)
-//                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
-//                    var result = Paint()
-//                        .apply {
-//                            this.textSize = fontSize.value
-//                        }
-//                        .measureText(text).dp
-//
-//                    while (result < columnWidthDp) {
-//                        fontSize.value
-//                            .inc()
-//                            .also { value ->
-//                                fontSize = value.sp
-//                            }
-//                        result = Paint()
-//                            .apply {
-//                                this.textSize = (fontSize * fontScaleFactor).value
-//                            }
-//                            .measureText(text).dp
-//                    }
-//
-//                    while (result >= columnWidthDp) {
-//                        fontSize.value
-//                            .dec()
-//                            .also { value ->
-//                                fontSize = value.sp
-//                            }
-//                        result = Paint()
-//                            .apply {
-//                                this.textSize = (fontSize * fontScaleFactor).value
-//                            }
-//                            .measureText(text).dp
-//                    }
-//                    textSize = fontSize
-//                    fitSet = true
-//                }
             },
-        style = TextStyle(fontSize = textSize, textAlign = TextAlign.Center),
+        style = TextStyle(
+            fontSize = textSize,
+            textAlign = TextAlign.Center),
         text = now.format(formatter),
         color = color,
     )
