@@ -132,14 +132,27 @@ fun CurrentTime(color: Color) {
                 if (!fitSet) {
                     val columnWidthDp = with(localDensity) { it.width.toDp() }
                     val text = now.format(formatter)
-                    var fontSize = TextUnit(100f * fontScaleFactor, TextUnitType.Sp)
+                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
                     var result = Paint()
                         .apply {
                             this.textSize = fontSize.value
                         }
                         .measureText(text).dp
 
-                    while (result > columnWidthDp) {
+                    while (result < columnWidthDp) {
+                        fontSize.value
+                            .inc()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(text).dp
+                    }
+
+                    while (result >= columnWidthDp) {
                         fontSize.value
                             .dec()
                             .also { value ->
