@@ -59,8 +59,8 @@ fun Section(id: Int) {
                 if (isWarm) {
 
                     var hue = Random.nextFloat() * 360
-                    var sat = Random.nextFloat()
-                    var value = Random.nextFloat()
+                    var sat = 1f // Random.nextFloat()
+                    var value = 1f // Random.nextFloat()
 
                     while (hue > 90 && hue < 270) {
                         hue = Random.nextFloat() * 360
@@ -69,8 +69,8 @@ fun Section(id: Int) {
                     val warmColorA = Color.hsv(hue, sat, value)
 
                     hue = Random.nextFloat() * 360
-                    sat = Random.nextFloat()
-                    value = Random.nextFloat()
+                    sat = 1f // Random.nextFloat()
+                    value = 1f // Random.nextFloat()
 
                     while (hue > 90 && hue < 270) {
                         hue = Random.nextFloat() * 360
@@ -115,8 +115,8 @@ fun Section(id: Int) {
                 } else {
 
                     var hue = Random.nextFloat() * 360
-                    var sat = Random.nextFloat()
-                    var value = Random.nextFloat()
+                    var sat = 1f // Random.nextFloat()
+                    var value = 1f // Random.nextFloat()
 
                     while (hue < 90 || hue > 270) {
                         hue = Random.nextFloat() * 360
@@ -125,8 +125,8 @@ fun Section(id: Int) {
                     val warmColorA = Color.hsv(hue, sat, value)
 
                     hue = Random.nextFloat() * 360
-                    sat = Random.nextFloat()
-                    value = Random.nextFloat()
+                    sat = 1f // Random.nextFloat()
+                    value = 1f // Random.nextFloat()
 
                     while (hue < 90 || hue > 270) {
                         hue = Random.nextFloat() * 360
@@ -179,8 +179,7 @@ fun Section(id: Int) {
         }
     }
 
-    // allow touch down and click handling for change colors
-    // can start touch in one box and still enable click in another with a separate touch
+    // allow touch down and click handling for change colors can start touch in one box and still enable click in another with a separate touch
     Box(
         modifier = Modifier
             .padding(0.dp)
