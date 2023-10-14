@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.compose.timerwithcolor.ui.Section
-import com.compose.timerwithcolor.ui.theme.MikuLightGreen
 import com.compose.timerwithcolor.ui.theme.TimerWithColorTheme
 
 class MainActivity : BaseActivity() {
@@ -27,19 +26,25 @@ class MainActivity : BaseActivity() {
                     color = Color.Black,
                 ) {
                     var id = 0
-                    Column(modifier = Modifier
-                        .padding(0.dp)
-                        .fillMaxSize()) {
-                        Row(modifier = Modifier
+                    Column(
+                        modifier = Modifier
                             .padding(0.dp)
-                            .weight(1f)) {
+                            .fillMaxSize(),
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(0.dp)
+                                .weight(1f)
+                        ) {
                             Section(id++)
                         }
-                        Row(modifier = Modifier
-                            .padding(0.dp)
-                            .weight(1f)) {
-                            Section(id++)
-                        }
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(0.dp)
+//                                .weight(1f)
+//                        ) {
+//                            Section(id++)
+//                        }
                     }
                 }
             }
