@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
@@ -37,7 +38,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Section(id: Int) {
 
@@ -51,27 +52,22 @@ fun Section(id: Int) {
     var isWarm by remember { mutableStateOf(false) }
     var addBlacks by remember { mutableStateOf(false) }
 
-    val warm = "${
-        if (isWarm) {
-            "Warm Colors"
-        } else {
-            "Cool Colors"
-        }
-    }"
+    val warm = if (isWarm) {
+        "Warm Colors"
+    } else {
+        "Cool Colors"
+    }
 
-    val dark = "${
-        if (addBlacks) {
-            "With Darkness"
-        } else {
-            "No Darkness"
-        }
-    }"
+    val dark = if (addBlacks) {
+        "With Darkness"
+    } else {
+        "No Darkness"
+    }
 
     LaunchedEffect(isPressed) {
         flow {
             while (isPressed) {
                 if (isWarm) {
-
                     var hue = Random.nextFloat() * 360
                     var sat = 1f // Random.nextFloat()
                     var value = if (addBlacks) {
@@ -217,14 +213,6 @@ fun Section(id: Int) {
             .background(
                 bgColor
             )
-//            .pointerInteropFilter { event ->
-//                if (event.action == MotionEvent.ACTION_DOWN) {
-//                    isPressed = true
-//                } else if (event.action == MotionEvent.ACTION_UP) {
-//                    isPressed = false
-//                }
-//                true
-//            }
             .combinedClickable(
                 enabled = true,
                 onClick = {
@@ -314,7 +302,7 @@ fun CurrentTime(color: Color, warm: String, dark: String) {
             fontSize = textSize,
             textAlign = TextAlign.Center
         ),
-        text = now.format(formatter) + "\n\n$warm\n\n$dark",
+        text = "$warm\n${now.format(formatter)}\n$dark",
         color = color,
     )
 }
