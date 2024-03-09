@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
@@ -38,7 +37,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Section(id: Int) {
 
@@ -146,7 +145,7 @@ fun Section(id: Int) {
 
                     val warmColorA = Color.hsv(hue, sat, value)
 
-                emit(Pair(a, b))
+                //emit(Pair(a, b))
                 delay(16) // run color change at 60 fps
                     hue = Random.nextFloat() * 360
                     sat = 1f // Random.nextFloat()
