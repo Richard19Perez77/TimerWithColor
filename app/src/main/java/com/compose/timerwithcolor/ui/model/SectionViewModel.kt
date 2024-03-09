@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
+import com.compose.timerwithcolor.ui.theme.MikuLightGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
 
 class SectionViewModel : ViewModel() {
