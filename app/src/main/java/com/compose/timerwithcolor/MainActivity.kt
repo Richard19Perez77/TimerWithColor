@@ -38,13 +38,13 @@ class MainActivity : BaseActivity() {
                         ) {
                             Section(id++)
                         }
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(0.dp)
-//                                .weight(1f)
-//                        ) {
-//                            Section(id++)
-//                        }
+                        Row(
+                            modifier = Modifier
+                                .padding(0.dp)
+                                .weight(1f)
+                        ) {
+                            Section(id++)
+                        }
                     }
                 }
             }

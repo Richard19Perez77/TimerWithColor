@@ -43,11 +43,11 @@ import kotlin.random.Random
 fun Section(id: Int) {
 
     val sectionViewModel: SectionViewModel = viewModel()
-    val sectionState = sectionViewModel.getSectionState(id)
+    val sectionState = sectionViewModel.sections.value?.get(id)
 
-    var isPressed by remember { mutableStateOf(sectionState.value?.isFlashing ?: false) }
-    var bgColor by remember { mutableStateOf(sectionState.value?.bgColor ?: MikuDarkGreen) }
-    var textColor by remember { mutableStateOf(sectionState.value?.textColor ?: MikuPink) }
+    var isPressed by remember { mutableStateOf(sectionState?.value?.isFlashing ?: false) }
+    var bgColor by remember { mutableStateOf(sectionState?.value?.bgColor ?: MikuDarkGreen) }
+    var textColor by remember { mutableStateOf(sectionState?.value?.textColor ?: MikuPink) }
 
     var isWarm by remember { mutableStateOf(false) }
     var addBlacks by remember { mutableStateOf(false) }
@@ -279,13 +279,12 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
                 .onSizeChanged {
                     if (!fitSet) {
                         val columnWidthDp = with(localDensity) { it.width.toDp() }
-                        val text = test
                         var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
                         var result = Paint()
                             .apply {
                                 this.textSize = fontSize.value
                             }
-                            .measureText(text).dp
+                            .measureText(test).dp
 
                         while (result < columnWidthDp) {
                             fontSize.value
@@ -297,7 +296,7 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
                                 .apply {
                                     this.textSize = (fontSize * fontScaleFactor).value
                                 }
-                                .measureText(text).dp
+                                .measureText(test).dp
                         }
 
                         while (result >= columnWidthDp) {
@@ -310,7 +309,7 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
                                 .apply {
                                     this.textSize = (fontSize * fontScaleFactor).value
                                 }
-                                .measureText(text).dp
+                                .measureText(test).dp
                         }
                         textSize = fontSize
                         fitSet = true
