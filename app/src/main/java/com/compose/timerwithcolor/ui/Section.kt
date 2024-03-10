@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,13 +52,13 @@ fun Section(id: Int) {
     var isWarm by remember { mutableStateOf(false) }
     var addBlacks by remember { mutableStateOf(false) }
 
-    val warm = if (isWarm) {
+    val tempColor = if (isWarm) {
         "Warm Colors"
     } else {
         "Cool Colors"
     }
 
-    val dark = if (addBlacks) {
+    val hasDarkness = if (addBlacks) {
         "With Darkness"
     } else {
         "No Darkness"
@@ -145,8 +146,8 @@ fun Section(id: Int) {
 
                     val warmColorA = Color.hsv(hue, sat, value)
 
-                //emit(Pair(a, b))
-                delay(16) // run color change at 60 fps
+                    //emit(Pair(a, b))
+                    delay(16) // run color change at 60 fps
                     hue = Random.nextFloat() * 360
                     sat = 1f // Random.nextFloat()
                     value = if (addBlacks) {
@@ -228,26 +229,28 @@ fun Section(id: Int) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        CurrentTime(textColor, warm, dark)
+        CurrentTime(textColor, tempColor, hasDarkness)
     }
 }
 
 @Composable
-fun CurrentTime(color: Color, warm: String, dark: String) {
+fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     var textSize by remember { mutableStateOf(0.sp) }
     var fitSet by remember { mutableStateOf(false) }
 
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+    val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
+    val formatter = DateTimeFormatter.ofPattern(pattern)
     val localDensity = LocalDensity.current
     val fontScaleFactor = LocalDensity.current.fontScale
+
+    val test = "0000-00-00 00:00:00.000"
 
     LaunchedEffect(Unit) {
         flow {
             while (true) {
                 emit(LocalDateTime.now())
-                delay(16) // allot changes for 60fps
-                delay(17) // Update the time once per second
+                delay(17) // allot changes for 60fps
             }
         }.collectLatest { time ->
             // Update the UI with the new time
@@ -256,55 +259,91 @@ fun CurrentTime(color: Color, warm: String, dark: String) {
     }
 
     // todo set in its own composable for font scaling
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp)
-            .onSizeChanged {
-                if (!fitSet) {
-                    val columnWidthDp = with(localDensity) { it.width.toDp() }
-                    val text = now.format(formatter)
-                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
-                    var result = Paint()
-                        .apply {
-                            this.textSize = fontSize.value
+    Column {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp),
+            style = TextStyle(
+                fontSize = textSize,
+                textAlign = TextAlign.Center
+            ),
+            text = tempColor,
+            color = color,
+        )
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp)
+                .onSizeChanged {
+                    if (!fitSet) {
+                        val columnWidthDp = with(localDensity) { it.width.toDp() }
+                        val text = test
+                        var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
+                        var result = Paint()
+                            .apply {
+                                this.textSize = fontSize.value
+                            }
+                            .measureText(text).dp
+
+                        while (result < columnWidthDp) {
+                            fontSize.value
+                                .inc()
+                                .also { value ->
+                                    fontSize = value.sp
+                                }
+                            result = Paint()
+                                .apply {
+                                    this.textSize = (fontSize * fontScaleFactor).value
+                                }
+                                .measureText(text).dp
                         }
-                        .measureText(text).dp
 
-                    while (result < columnWidthDp) {
-                        fontSize.value
-                            .inc()
-                            .also { value ->
-                                fontSize = value.sp
-                            }
-                        result = Paint()
-                            .apply {
-                                this.textSize = (fontSize * fontScaleFactor).value
-                            }
-                            .measureText(text).dp
+                        while (result >= columnWidthDp) {
+                            fontSize.value
+                                .dec()
+                                .also { value ->
+                                    fontSize = value.sp
+                                }
+                            result = Paint()
+                                .apply {
+                                    this.textSize = (fontSize * fontScaleFactor).value
+                                }
+                                .measureText(text).dp
+                        }
+                        textSize = fontSize
+                        fitSet = true
                     }
+                },
+            style = TextStyle(
+                fontSize = textSize,
+                textAlign = TextAlign.Center
+            ),
+            text = adjustNowString(now.format(formatter), test),
+            color = color,
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp),
+            style = TextStyle(
+                fontSize = textSize,
+                textAlign = TextAlign.Center
+            ),
+            text = hasDarkness,
+            color = color,
+        )
+    }
+}
 
-                    while (result >= columnWidthDp) {
-                        fontSize.value
-                            .dec()
-                            .also { value ->
-                                fontSize = value.sp
-                            }
-                        result = Paint()
-                            .apply {
-                                this.textSize = (fontSize * fontScaleFactor).value
-                            }
-                            .measureText(text).dp
-                    }
-                    textSize = fontSize
-                    fitSet = true
-                }
-            },
-        style = TextStyle(
-            fontSize = textSize,
-            textAlign = TextAlign.Center
-        ),
-        text = "$warm\n${now.format(formatter)}\n$dark",
-        color = color,
-    )
+fun adjustNowString(format: String?, test : String): String {
+    val sb : StringBuilder = java.lang.StringBuilder()
+    sb.append(format)
+    format.let {
+        if (it?.length!! < test.length){
+            sb.append("0")
+        }
+    }
+    return sb.toString()
 }
