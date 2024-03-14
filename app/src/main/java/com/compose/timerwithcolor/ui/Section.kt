@@ -248,8 +248,13 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
             text = tempColor,
             color = color,
         )
+        FitText(tempColor, color)
 
-        FitText(color = color)
+        FitText("Date : Time", color)
+
+        TimerFitText(color = color)
+
+        FitText(hasDarkness, color)
 
         Text(
             modifier = Modifier
@@ -296,7 +301,66 @@ fun TimerComposable(callback : (LocalDateTime) -> Unit) {
 }
 
 @Composable
-fun FitText(color: Color) {
+fun FitText(text: String, color: Color) {
+    var fitSet by remember { mutableStateOf(false) }
+    var textSize by remember { mutableStateOf(0.sp) }
+    val localDensity = LocalDensity.current
+    val fontScaleFactor = LocalDensity.current.fontScale
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp)
+            .onSizeChanged {
+                if (!fitSet) {
+                    val columnWidthDp = with(localDensity) { it.width.toDp() }
+                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
+                    var result = Paint()
+                        .apply {
+                            this.textSize = fontSize.value
+                        }
+                        .measureText(text).dp
+
+                    while (result < columnWidthDp) {
+                        fontSize.value
+                            .inc()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(text).dp
+                    }
+
+                    while (result >= columnWidthDp) {
+                        fontSize.value
+                            .dec()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(text).dp
+                    }
+                    textSize = fontSize
+                    fitSet = true
+                }
+            },
+        style = TextStyle(
+            fontSize = textSize,
+            textAlign = TextAlign.Center
+        ),
+        text = text,
+        color = color,
+    )
+}
+
+@Composable
+fun TimerFitText(color: Color) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     TimerComposable {
         now = it
@@ -309,8 +373,6 @@ fun FitText(color: Color) {
     val test = "0000-00-00 00:00:00.000"
     val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
     val formatter = DateTimeFormatter.ofPattern(pattern)
-
-    AdjustTextSizeText(now.format(formatter), textSize = textSize)
 
     Text(
         modifier = Modifier
@@ -360,19 +422,6 @@ fun FitText(color: Color) {
             textAlign = TextAlign.Center
         ),
         text = adjustNowString(now.format(formatter), test),
-        color = color,
-    )
-}
-
-@Composable
-fun AdjustTextSizeText(text: String, color : Color = Color.Unspecified, textSize : TextUnit) {
-    Text(
-        style = TextStyle(
-            fontSize = textSize,
-            textAlign = TextAlign.Center
-        ),
-        modifier = Modifier.fillMaxWidth().padding(0.dp),
-        text = text,
         color = color,
     )
 }
