@@ -147,7 +147,6 @@ fun Section(id: Int) {
                     val warmColorA = Color.hsv(hue, sat, value)
 
                     //emit(Pair(a, b))
-                    delay(16) // run color change at 60 fps
                     hue = Random.nextFloat() * 360
                     sat = 1f // Random.nextFloat()
                     value = if (addBlacks) {
