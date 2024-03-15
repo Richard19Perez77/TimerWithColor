@@ -28,49 +28,33 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.compose.timerwithcolor.ui.model.SectionState
 import com.compose.timerwithcolor.ui.model.SectionViewModel
-import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
-import com.compose.timerwithcolor.ui.theme.MikuPink
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Section(id: Int) {
 
+    val delayTime = 10L
+
     val sectionViewModel: SectionViewModel = viewModel()
-    val sectionState = sectionViewModel.sections.value?.get(id)
 
-    var isPressed by remember { mutableStateOf(sectionState?.value?.isFlashing ?: false) }
-    var bgColor by remember { mutableStateOf(sectionState?.value?.bgColor ?: MikuDarkGreen) }
-    var textColor by remember { mutableStateOf(sectionState?.value?.textColor ?: MikuPink) }
-
-    var isWarm by remember { mutableStateOf(false) }
-    var addBlacks by remember { mutableStateOf(false) }
-
-    val tempColor = if (isWarm) {
-        "Warm Colors"
-    } else {
-        "Cool Colors"
+    val sectionState = remember {
+        sectionViewModel.sections.value.getOrDefault(id, SectionState(id))
     }
 
-    val hasDarkness = if (addBlacks) {
-        "With Darkness"
-    } else {
-        "No Darkness"
-    }
-
-    LaunchedEffect(isPressed) {
-        flow {
-            while (isPressed) {
-                if (isWarm) {
+    LaunchedEffect(sectionState.isFlashing.value) {
+        while (sectionState.isFlashing.value) {
+            if (sectionState.isWarm.value) {
+                if (sectionState.isHSV.value) {
                     var hue = Random.nextFloat() * 360
                     var sat = 1f // Random.nextFloat()
-                    var value = if (addBlacks) {
+                    var value = if (sectionState.addBlacks.value) {
                         Random.nextFloat() * (1f - .10f) + .10f
                     } else {
                         1f
@@ -80,11 +64,11 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorA = Color.hsv(hue, sat, value)
+                    val warmColorHSVa = Color.hsv(hue, sat, value)
 
                     hue = Random.nextFloat() * 360
                     sat = 1f
-                    value = if (addBlacks) {
+                    value = if (sectionState.addBlacks.value) {
                         Random.nextFloat() * (1f - .10f) + .10f
                     } else {
                         1f
@@ -93,48 +77,51 @@ fun Section(id: Int) {
                     while (hue > 90 && hue < 270) {
                         hue = Random.nextFloat() * 360
                     }
+                    val warmColorHSVb = Color.hsv(hue, sat, value)
 
-                    val warmColorB = Color.hsv(hue, sat, value)
-
-//                    var red = Random.nextInt(0..255)
-//                    var blue = Random.nextInt(0..255)
-//                    var green = Random.nextInt(0..255)
-//
-//                    while (red < blue) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val a = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-//
-//                    red = Random.nextInt(0..255)
-//                    blue = Random.nextInt(0..255)
-//                    green = Random.nextInt(0..255)
-//
-//                    while (red < blue) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val b = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-
-                    //emit(Pair(a, b))
-                    emit(Pair(warmColorA, warmColorB))
+                    sectionState.bgColor.value = warmColorHSVa
+                    sectionState.textColor.value = warmColorHSVb
                 } else {
+                    var red = Random.nextInt(0..255)
+                    var blue = Random.nextInt(0..255)
+                    var green = Random.nextInt(0..255)
 
+                    while (red < blue) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val warmColorRGBa = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    red = Random.nextInt(0..255)
+                    blue = Random.nextInt(0..255)
+                    green = Random.nextInt(0..255)
+
+                    while (red < blue) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val warmColorRGBb = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    sectionState.bgColor.value = warmColorRGBa
+                    sectionState.textColor.value = warmColorRGBb
+                }
+            } else {
+                if (sectionState.isHSV.value) {
                     var hue = Random.nextFloat() * 360
                     var sat = 1f
-                    var value = if (addBlacks) {
+                    var value = if (sectionState.addBlacks.value) {
                         Random.nextFloat() * (1f - .10f) + .10f
                     } else {
                         1f
@@ -144,12 +131,11 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorA = Color.hsv(hue, sat, value)
+                    val coolHSVa = Color.hsv(hue, sat, value)
 
-                    //emit(Pair(a, b))
                     hue = Random.nextFloat() * 360
-                    sat = 1f // Random.nextFloat()
-                    value = if (addBlacks) {
+                    sat = 1f
+                    value = if (sectionState.addBlacks.value) {
                         Random.nextFloat() * (1f - .10f) + .10f
                     } else {
                         1f
@@ -159,76 +145,87 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorB = Color.hsv(hue, sat, value)
+                    val coolHSVb = Color.hsv(hue, sat, value)
 
-//                    var red = Random.nextInt(0..255)
-//                    var blue = Random.nextInt(0..255)
-//                    var green = Random.nextInt(0..255)
-//
-//                    while (blue < red) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val a = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-//
-//                    red = Random.nextInt(0..255)
-//                    blue = Random.nextInt(0..255)
-//                    green = Random.nextInt(0..255)
-//
-//                    while (blue < red) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val b = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
+                    sectionState.bgColor.value = coolHSVa
+                    sectionState.textColor.value = coolHSVb
+                } else {
 
-                    //emit(Pair(a, b))
-                    emit(Pair(warmColorA, warmColorB))
+                    var red = Random.nextInt(0..255)
+                    var blue = Random.nextInt(0..255)
+                    var green = Random.nextInt(0..255)
+
+                    while (blue < red) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val coolRGBa = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    red = Random.nextInt(0..255)
+                    blue = Random.nextInt(0..255)
+                    green = Random.nextInt(0..255)
+
+                    while (blue < red) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val coolRGBb = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    sectionState.bgColor.value = coolRGBa
+                    sectionState.textColor.value = coolRGBb
                 }
-                delay(17) // Update the time once per second
+
             }
-        }.collectLatest { res ->
-            // Update the UI with the new time
-            val (a, b) = res
-            bgColor = a
-            textColor = b
+            delay(delayTime)
         }
     }
 
-    // allow touch down and click handling for change colors can start touch in one box and still enable click in another with a separate touch
     Box(
         modifier = Modifier
             .padding(0.dp)
             .fillMaxSize()
             .background(
-                bgColor
+                sectionState.bgColor.value
             )
             .combinedClickable(
                 enabled = true,
                 onClick = {
-                    isPressed = !isPressed
+                    sectionState.isFlashing.value = !sectionState.isFlashing.value
                 },
                 onLongClick = {
-                    addBlacks = !addBlacks
+                    sectionState.addBlacks.value = !sectionState.addBlacks.value
                 },
                 onDoubleClick = {
-                    isWarm = !isWarm
+                    sectionState.isWarm.value = !sectionState.isWarm.value
                 },
             ),
         contentAlignment = Alignment.Center
     ) {
-        CurrentTime(textColor, tempColor, hasDarkness)
+        CurrentTime(
+            sectionState.textColor.value,
+            if (sectionState.isWarm.value) {
+                "Warm Colors"
+            } else {
+                "Cool Colors"
+            },
+            if (sectionState.addBlacks.value) {
+                "With Darkness"
+            } else {
+                "No Darkness"
+            }
+        )
     }
 }
 
@@ -245,19 +242,15 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
 
     val test = "0000-00-00 00:00:00.000"
 
+    val delayTime = 10L
+
     LaunchedEffect(Unit) {
-        flow {
-            while (true) {
-                emit(LocalDateTime.now())
-                delay(17) // allot changes for 60fps
-            }
-        }.collectLatest { time ->
-            // Update the UI with the new time
-            now = time
+        while (true) {
+            now = LocalDateTime.now()
+            delay(delayTime)
         }
     }
 
-    // todo set in its own composable for font scaling
     Column {
         Text(
             modifier = Modifier
