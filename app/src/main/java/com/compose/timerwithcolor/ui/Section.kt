@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -45,13 +46,13 @@ fun Section(id: Int) {
     val sectionViewModel: SectionViewModel = viewModel()
     val sectionState = sectionViewModel.sections.value?.get(id)
 
-
     var isPressed by remember { mutableStateOf(sectionState?.value?.isFlashing ?: false) }
     var bgColor by remember { mutableStateOf(sectionState?.value?.bgColor ?: MikuDarkGreen) }
     var textColor by remember { mutableStateOf(sectionState?.value?.textColor ?: MikuPink) }
 
     var isWarm by remember { mutableStateOf(false) }
     var addBlacks by remember { mutableStateOf(false) }
+    val isHSV = true
 
     val tempColor = if (isWarm) {
         "Warm Colors"
@@ -66,9 +67,9 @@ fun Section(id: Int) {
     }
 
     LaunchedEffect(isPressed) {
-        flow {
-            while (isPressed) {
-                if (isWarm) {
+        while (isPressed) {
+            if (isWarm) {
+                if (isHSV) {
                     var hue = Random.nextFloat() * 360
                     var sat = 1f // Random.nextFloat()
                     var value = if (addBlacks) {
@@ -81,7 +82,7 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorA = Color.hsv(hue, sat, value)
+                    val warmColorHSVa = Color.hsv(hue, sat, value)
 
                     hue = Random.nextFloat() * 360
                     sat = 1f
@@ -94,45 +95,48 @@ fun Section(id: Int) {
                     while (hue > 90 && hue < 270) {
                         hue = Random.nextFloat() * 360
                     }
+                    val warmColorHSVb = Color.hsv(hue, sat, value)
 
-                    val warmColorB = Color.hsv(hue, sat, value)
-
-//                    var red = Random.nextInt(0..255)
-//                    var blue = Random.nextInt(0..255)
-//                    var green = Random.nextInt(0..255)
-//
-//                    while (red < blue) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val a = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-//
-//                    red = Random.nextInt(0..255)
-//                    blue = Random.nextInt(0..255)
-//                    green = Random.nextInt(0..255)
-//
-//                    while (red < blue) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val b = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-
-                    //emit(Pair(a, b))
-                    emit(Pair(warmColorA, warmColorB))
+                    bgColor = warmColorHSVa
+                    textColor = warmColorHSVb
                 } else {
+                    var red = Random.nextInt(0..255)
+                    var blue = Random.nextInt(0..255)
+                    var green = Random.nextInt(0..255)
 
+                    while (red < blue) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val warmColorRGBa = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    red = Random.nextInt(0..255)
+                    blue = Random.nextInt(0..255)
+                    green = Random.nextInt(0..255)
+
+                    while (red < blue) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val warmColorRGBb = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    bgColor = warmColorRGBa
+                    textColor = warmColorRGBb
+                }
+            } else {
+                if (isHSV) {
                     var hue = Random.nextFloat() * 360
                     var sat = 1f
                     var value = if (addBlacks) {
@@ -145,11 +149,10 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorA = Color.hsv(hue, sat, value)
+                    val coolHSVa = Color.hsv(hue, sat, value)
 
-                    //emit(Pair(a, b))
                     hue = Random.nextFloat() * 360
-                    sat = 1f // Random.nextFloat()
+                    sat = 1f
                     value = if (addBlacks) {
                         Random.nextFloat() * (1f - .10f) + .10f
                     } else {
@@ -160,52 +163,193 @@ fun Section(id: Int) {
                         hue = Random.nextFloat() * 360
                     }
 
-                    val warmColorB = Color.hsv(hue, sat, value)
+                    val coolHSVb = Color.hsv(hue, sat, value)
 
-//                    var red = Random.nextInt(0..255)
-//                    var blue = Random.nextInt(0..255)
-//                    var green = Random.nextInt(0..255)
-//
-//                    while (blue < red) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val a = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
-//
-//                    red = Random.nextInt(0..255)
-//                    blue = Random.nextInt(0..255)
-//                    green = Random.nextInt(0..255)
-//
-//                    while (blue < red) {
-//                        red = Random.nextInt(0..255)
-//                        blue = Random.nextInt(0..255)
-//                        green = Random.nextInt(0..255)
-//                    }
-//
-//                    @Suppress("UNUSED_VARIABLE") val b = Color(
-//                        red = red,
-//                        blue = blue,
-//                        green = green
-//                    )
+                    bgColor = coolHSVa
+                    textColor = coolHSVb
+                } else {
 
-                    //emit(Pair(a, b))
-                    emit(Pair(warmColorA, warmColorB))
+                    var red = Random.nextInt(0..255)
+                    var blue = Random.nextInt(0..255)
+                    var green = Random.nextInt(0..255)
+
+                    while (blue < red) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val coolRGBa = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    red = Random.nextInt(0..255)
+                    blue = Random.nextInt(0..255)
+                    green = Random.nextInt(0..255)
+
+                    while (blue < red) {
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+                    }
+
+                    val coolRGBb = Color(
+                        red = red,
+                        blue = blue,
+                        green = green
+                    )
+
+                    bgColor = coolRGBa
+                    textColor = coolRGBb
                 }
-                delay(17) // Update the time once per second
             }
-        }.collectLatest { res ->
-            // Update the UI with the new time
-            val (a, b) = res
-            bgColor = a
-            textColor = b
+            delay(17)
         }
     }
+
+//        flow {
+//            while (isPressed) {
+//                if (isWarm) {
+//                    var hue = Random.nextFloat() * 360
+//                    var sat = 1f // Random.nextFloat()
+//                    var value = if (addBlacks) {
+//                        Random.nextFloat() * (1f - .10f) + .10f
+//                    } else {
+//                        1f
+//                    }
+//
+//                    while (hue > 90 && hue < 270) {
+//                        hue = Random.nextFloat() * 360
+//                    }
+//
+//                    val warmColorA = Color.hsv(hue, sat, value)
+//
+//                    hue = Random.nextFloat() * 360
+//                    sat = 1f
+//                    value = if (addBlacks) {
+//                        Random.nextFloat() * (1f - .10f) + .10f
+//                    } else {
+//                        1f
+//                    }
+//
+//                    while (hue > 90 && hue < 270) {
+//                        hue = Random.nextFloat() * 360
+//                    }
+//
+//                    val warmColorB = Color.hsv(hue, sat, value)
+//
+////                    var red = Random.nextInt(0..255)
+////                    var blue = Random.nextInt(0..255)
+////                    var green = Random.nextInt(0..255)
+////
+////                    while (red < blue) {
+////                        red = Random.nextInt(0..255)
+////                        blue = Random.nextInt(0..255)
+////                        green = Random.nextInt(0..255)
+////                    }
+////
+////                    @Suppress("UNUSED_VARIABLE") val a = Color(
+////                        red = red,
+////                        blue = blue,
+////                        green = green
+////                    )
+////
+////                    red = Random.nextInt(0..255)
+////                    blue = Random.nextInt(0..255)
+////                    green = Random.nextInt(0..255)
+////
+////                    while (red < blue) {
+////                        red = Random.nextInt(0..255)
+////                        blue = Random.nextInt(0..255)
+////                        green = Random.nextInt(0..255)
+////                    }
+////
+////                    @Suppress("UNUSED_VARIABLE") val b = Color(
+////                        red = red,
+////                        blue = blue,
+////                        green = green
+////                    )
+//
+//                    //emit(Pair(a, b))
+//                    emit(Pair(warmColorA, warmColorB))
+//                } else {
+//
+//                    var hue = Random.nextFloat() * 360
+//                    var sat = 1f
+//                    var value = if (addBlacks) {
+//                        Random.nextFloat() * (1f - .10f) + .10f
+//                    } else {
+//                        1f
+//                    }
+//
+//                    while (hue < 90 || hue > 270) {
+//                        hue = Random.nextFloat() * 360
+//                    }
+//
+//                    val warmColorA = Color.hsv(hue, sat, value)
+//
+//                    //emit(Pair(a, b))
+//                    //delay(16) // run color change at 60 fps
+//                    hue = Random.nextFloat() * 360
+//                    sat = 1f // Random.nextFloat()
+//                    value = if (addBlacks) {
+//                        Random.nextFloat() * (1f - .10f) + .10f
+//                    } else {
+//                        1f
+//                    }
+//
+//                    while (hue < 90 || hue > 270) {
+//                        hue = Random.nextFloat() * 360
+//                    }
+//
+//                    val warmColorB = Color.hsv(hue, sat, value)
+//
+////                    var red = Random.nextInt(0..255)
+////                    var blue = Random.nextInt(0..255)
+////                    var green = Random.nextInt(0..255)
+////
+////                    while (blue < red) {
+////                        red = Random.nextInt(0..255)
+////                        blue = Random.nextInt(0..255)
+////                        green = Random.nextInt(0..255)
+////                    }
+////
+////                    @Suppress("UNUSED_VARIABLE") val a = Color(
+////                        red = red,
+////                        blue = blue,
+////                        green = green
+////                    )
+////
+////                    red = Random.nextInt(0..255)
+////                    blue = Random.nextInt(0..255)
+////                    green = Random.nextInt(0..255)
+////
+////                    while (blue < red) {
+////                        red = Random.nextInt(0..255)
+////                        blue = Random.nextInt(0..255)
+////                        green = Random.nextInt(0..255)
+////                    }
+////
+////                    @Suppress("UNUSED_VARIABLE") val b = Color(
+////                        red = red,
+////                        blue = blue,
+////                        green = green
+////                    )
+//
+//                    //emit(Pair(a, b))
+//                    emit(Pair(warmColorA, warmColorB))
+//                }
+//                delay(17) // Update the time once per second
+//            }
+//        }.collectLatest { res ->
+            // Update the UI with the new time
+//            val (emittedAColor, emittedBColor) = res
+//            bgColor = emittedAColor
+//            textColor = emittedBColor
+//        }
+//    }
 
     // allow touch down and click handling for change colors can start touch in one box and still enable click in another with a separate touch
     Box(
