@@ -40,22 +40,12 @@ import kotlin.random.nextInt
 @Composable
 fun Section(id: Int) {
 
+    val delayTime = 10L
+
     val sectionViewModel: SectionViewModel = viewModel()
 
     val sectionState = remember {
         sectionViewModel.sections.value.getOrDefault(id, SectionState(id))
-    }
-
-    val tempColor = if (sectionState.isWarm.value) {
-        "Warm Colors"
-    } else {
-        "Cool Colors"
-    }
-
-    val hasDarkness = if (sectionState.addBlacks.value) {
-        "With Darkness"
-    } else {
-        "No Darkness"
     }
 
     LaunchedEffect(sectionState.isFlashing.value) {
@@ -198,7 +188,7 @@ fun Section(id: Int) {
                 }
 
             }
-            delay(17)
+            delay(delayTime)
         }
     }
 
@@ -223,7 +213,19 @@ fun Section(id: Int) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        CurrentTime(sectionState.textColor.value, tempColor, hasDarkness)
+        CurrentTime(
+            sectionState.textColor.value,
+            if (sectionState.isWarm.value) {
+                "Warm Colors"
+            } else {
+                "Cool Colors"
+            },
+            if (sectionState.addBlacks.value) {
+                "With Darkness"
+            } else {
+                "No Darkness"
+            }
+        )
     }
 }
 
@@ -240,10 +242,12 @@ fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
 
     val test = "0000-00-00 00:00:00.000"
 
+    val delayTime = 10L
+
     LaunchedEffect(Unit) {
         while (true) {
             now = LocalDateTime.now()
-            delay(17)
+            delay(delayTime)
         }
     }
 
