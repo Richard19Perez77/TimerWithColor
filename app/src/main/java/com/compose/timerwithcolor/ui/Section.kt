@@ -1,6 +1,7 @@
 package com.compose.timerwithcolor.ui
 
 import android.graphics.Paint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -39,155 +40,158 @@ import kotlin.random.nextInt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Section(id: Int) {
-
-    val delayTime = 10L
-
+    val delayTime = 5L
+    val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
+    val formatter = DateTimeFormatter.ofPattern(pattern)
     val sectionViewModel: SectionViewModel = viewModel()
-
     val sectionState = remember {
         sectionViewModel.sections.value.getOrDefault(id, SectionState(id))
     }
 
-    LaunchedEffect(sectionState.isFlashing.value) {
-        while (sectionState.isFlashing.value) {
-            if (sectionState.isWarm.value) {
-                if (sectionState.isHSV.value) {
-                    var hue = Random.nextFloat() * 360
-                    var sat = 1f // Random.nextFloat()
-                    var value = if (sectionState.addBlacks.value) {
-                        Random.nextFloat() * (1f - .10f) + .10f
-                    } else {
-                        1f
-                    }
+    LaunchedEffect(Unit) {
+        while (true) {
+            sectionState.time.value = LocalDateTime.now()
 
-                    while (hue > 90 && hue < 270) {
+            if (sectionState.isFlashing.value) {
+                if (sectionState.isWarm.value) {
+                    if (sectionState.isHSV.value) {
+                        var hue = Random.nextFloat() * 360
+                        var sat = 1f // Random.nextFloat()
+                        var value = if (sectionState.addBlacks.value) {
+                            Random.nextFloat() * (1f - .10f) + .10f
+                        } else {
+                            1f
+                        }
+
+                        while (hue > 90 && hue < 270) {
+                            hue = Random.nextFloat() * 360
+                        }
+
+                        val warmColorHSVa = Color.hsv(hue, sat, value)
+
                         hue = Random.nextFloat() * 360
-                    }
+                        sat = 1f
+                        value = if (sectionState.addBlacks.value) {
+                            Random.nextFloat() * (1f - .10f) + .10f
+                        } else {
+                            1f
+                        }
 
-                    val warmColorHSVa = Color.hsv(hue, sat, value)
+                        while (hue > 90 && hue < 270) {
+                            hue = Random.nextFloat() * 360
+                        }
+                        val warmColorHSVb = Color.hsv(hue, sat, value)
 
-                    hue = Random.nextFloat() * 360
-                    sat = 1f
-                    value = if (sectionState.addBlacks.value) {
-                        Random.nextFloat() * (1f - .10f) + .10f
+                        sectionState.bgColor.value = warmColorHSVa
+                        sectionState.textColor.value = warmColorHSVb
                     } else {
-                        1f
-                    }
+                        var red = Random.nextInt(0..255)
+                        var blue = Random.nextInt(0..255)
+                        var green = Random.nextInt(0..255)
 
-                    while (hue > 90 && hue < 270) {
-                        hue = Random.nextFloat() * 360
-                    }
-                    val warmColorHSVb = Color.hsv(hue, sat, value)
+                        while (red < blue) {
+                            red = Random.nextInt(0..255)
+                            blue = Random.nextInt(0..255)
+                            green = Random.nextInt(0..255)
+                        }
 
-                    sectionState.bgColor.value = warmColorHSVa
-                    sectionState.textColor.value = warmColorHSVb
+                        val warmColorRGBa = Color(
+                            red = red,
+                            blue = blue,
+                            green = green
+                        )
+
+                        red = Random.nextInt(0..255)
+                        blue = Random.nextInt(0..255)
+                        green = Random.nextInt(0..255)
+
+                        while (red < blue) {
+                            red = Random.nextInt(0..255)
+                            blue = Random.nextInt(0..255)
+                            green = Random.nextInt(0..255)
+                        }
+
+                        val warmColorRGBb = Color(
+                            red = red,
+                            blue = blue,
+                            green = green
+                        )
+
+                        sectionState.bgColor.value = warmColorRGBa
+                        sectionState.textColor.value = warmColorRGBb
+                    }
                 } else {
-                    var red = Random.nextInt(0..255)
-                    var blue = Random.nextInt(0..255)
-                    var green = Random.nextInt(0..255)
+                    if (sectionState.isHSV.value) {
+                        var hue = Random.nextFloat() * 360
+                        var sat = 1f
+                        var value = if (sectionState.addBlacks.value) {
+                            Random.nextFloat() * (1f - .10f) + .10f
+                        } else {
+                            1f
+                        }
 
-                    while (red < blue) {
-                        red = Random.nextInt(0..255)
-                        blue = Random.nextInt(0..255)
-                        green = Random.nextInt(0..255)
-                    }
+                        while (hue < 90 || hue > 270) {
+                            hue = Random.nextFloat() * 360
+                        }
 
-                    val warmColorRGBa = Color(
-                        red = red,
-                        blue = blue,
-                        green = green
-                    )
+                        val coolHSVa = Color.hsv(hue, sat, value)
 
-                    red = Random.nextInt(0..255)
-                    blue = Random.nextInt(0..255)
-                    green = Random.nextInt(0..255)
-
-                    while (red < blue) {
-                        red = Random.nextInt(0..255)
-                        blue = Random.nextInt(0..255)
-                        green = Random.nextInt(0..255)
-                    }
-
-                    val warmColorRGBb = Color(
-                        red = red,
-                        blue = blue,
-                        green = green
-                    )
-
-                    sectionState.bgColor.value = warmColorRGBa
-                    sectionState.textColor.value = warmColorRGBb
-                }
-            } else {
-                if (sectionState.isHSV.value) {
-                    var hue = Random.nextFloat() * 360
-                    var sat = 1f
-                    var value = if (sectionState.addBlacks.value) {
-                        Random.nextFloat() * (1f - .10f) + .10f
-                    } else {
-                        1f
-                    }
-
-                    while (hue < 90 || hue > 270) {
                         hue = Random.nextFloat() * 360
-                    }
+                        sat = 1f
+                        value = if (sectionState.addBlacks.value) {
+                            Random.nextFloat() * (1f - .10f) + .10f
+                        } else {
+                            1f
+                        }
 
-                    val coolHSVa = Color.hsv(hue, sat, value)
+                        while (hue < 90 || hue > 270) {
+                            hue = Random.nextFloat() * 360
+                        }
 
-                    hue = Random.nextFloat() * 360
-                    sat = 1f
-                    value = if (sectionState.addBlacks.value) {
-                        Random.nextFloat() * (1f - .10f) + .10f
+                        val coolHSVb = Color.hsv(hue, sat, value)
+
+                        sectionState.bgColor.value = coolHSVa
+                        sectionState.textColor.value = coolHSVb
                     } else {
-                        1f
-                    }
 
-                    while (hue < 90 || hue > 270) {
-                        hue = Random.nextFloat() * 360
-                    }
+                        var red = Random.nextInt(0..255)
+                        var blue = Random.nextInt(0..255)
+                        var green = Random.nextInt(0..255)
 
-                    val coolHSVb = Color.hsv(hue, sat, value)
+                        while (blue < red) {
+                            red = Random.nextInt(0..255)
+                            blue = Random.nextInt(0..255)
+                            green = Random.nextInt(0..255)
+                        }
 
-                    sectionState.bgColor.value = coolHSVa
-                    sectionState.textColor.value = coolHSVb
-                } else {
+                        val coolRGBa = Color(
+                            red = red,
+                            blue = blue,
+                            green = green
+                        )
 
-                    var red = Random.nextInt(0..255)
-                    var blue = Random.nextInt(0..255)
-                    var green = Random.nextInt(0..255)
-
-                    while (blue < red) {
                         red = Random.nextInt(0..255)
                         blue = Random.nextInt(0..255)
                         green = Random.nextInt(0..255)
+
+                        while (blue < red) {
+                            red = Random.nextInt(0..255)
+                            blue = Random.nextInt(0..255)
+                            green = Random.nextInt(0..255)
+                        }
+
+                        val coolRGBb = Color(
+                            red = red,
+                            blue = blue,
+                            green = green
+                        )
+
+                        sectionState.bgColor.value = coolRGBa
+                        sectionState.textColor.value = coolRGBb
                     }
-
-                    val coolRGBa = Color(
-                        red = red,
-                        blue = blue,
-                        green = green
-                    )
-
-                    red = Random.nextInt(0..255)
-                    blue = Random.nextInt(0..255)
-                    green = Random.nextInt(0..255)
-
-                    while (blue < red) {
-                        red = Random.nextInt(0..255)
-                        blue = Random.nextInt(0..255)
-                        green = Random.nextInt(0..255)
-                    }
-
-                    val coolRGBb = Color(
-                        red = red,
-                        blue = blue,
-                        green = green
-                    )
-
-                    sectionState.bgColor.value = coolRGBa
-                    sectionState.textColor.value = coolRGBb
                 }
-
             }
+
             delay(delayTime)
         }
     }
@@ -224,108 +228,101 @@ fun Section(id: Int) {
                 "With Darkness"
             } else {
                 "No Darkness"
-            }
+            },
+            sectionState.time.value.format(formatter)
         )
     }
 }
 
 @Composable
-fun CurrentTime(color: Color, tempColor: String, hasDarkness: String) {
-    var now by remember { mutableStateOf(LocalDateTime.now()) }
-    var textSize by remember { mutableStateOf(0.sp) }
-    var fitSet by remember { mutableStateOf(false) }
-
-    val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
-    val formatter = DateTimeFormatter.ofPattern(pattern)
-    val localDensity = LocalDensity.current
-    val fontScaleFactor = LocalDensity.current.fontScale
-
-    val test = "0000-00-00 00:00:00.000"
-
-    val delayTime = 10L
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            now = LocalDateTime.now()
-            delay(delayTime)
-        }
-    }
-
+fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text : String) {
     Column {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(0.dp),
             style = TextStyle(
-                fontSize = textSize,
+                fontSize = 28.sp,
                 textAlign = TextAlign.Center
             ),
             text = tempColor,
-            color = color,
+            color = textColor,
         )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp)
-                .onSizeChanged {
-                    if (!fitSet) {
-                        val columnWidthDp = with(localDensity) { it.width.toDp() }
-                        var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
-                        var result = Paint()
-                            .apply {
-                                this.textSize = fontSize.value
-                            }
-                            .measureText(test).dp
+        FitText(Modifier, text, textColor)
 
-                        while (result < columnWidthDp) {
-                            fontSize.value
-                                .inc()
-                                .also { value ->
-                                    fontSize = value.sp
-                                }
-                            result = Paint()
-                                .apply {
-                                    this.textSize = (fontSize * fontScaleFactor).value
-                                }
-                                .measureText(test).dp
-                        }
-
-                        while (result >= columnWidthDp) {
-                            fontSize.value
-                                .dec()
-                                .also { value ->
-                                    fontSize = value.sp
-                                }
-                            result = Paint()
-                                .apply {
-                                    this.textSize = (fontSize * fontScaleFactor).value
-                                }
-                                .measureText(test).dp
-                        }
-                        textSize = fontSize
-                        fitSet = true
-                    }
-                },
-            style = TextStyle(
-                fontSize = textSize,
-                textAlign = TextAlign.Center
-            ),
-            text = adjustNowString(now.format(formatter), test),
-            color = color,
-        )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(0.dp),
             style = TextStyle(
-                fontSize = textSize,
+                fontSize = 28.sp,
                 textAlign = TextAlign.Center
             ),
             text = hasDarkness,
-            color = color,
+            color = textColor,
         )
     }
+}
+
+@Composable
+fun FitText(modifier : Modifier = Modifier, text: String, textColor: Color) {
+    var textSize by remember { mutableStateOf(0.sp) }
+    var fitSet by remember { mutableStateOf(false) }
+    val localDensity = LocalDensity.current
+    val fontScaleFactor = LocalDensity.current.fontScale
+    val test = "0000-00-00 00:00:00.000"
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp)
+            .onSizeChanged {
+                if (!fitSet) {
+                    val columnWidthDp = with(localDensity) { it.width.toDp() }
+                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
+                    var result = Paint()
+                        .apply {
+                            this.textSize = fontSize.value
+                        }
+                        .measureText(test).dp
+
+                    while (result < columnWidthDp) {
+                        fontSize.value
+                            .inc()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(test).dp
+                    }
+
+                    while (result >= columnWidthDp) {
+                        fontSize.value
+                            .dec()
+                            .also { value ->
+                                fontSize = value.sp
+                            }
+                        result = Paint()
+                            .apply {
+                                this.textSize = (fontSize * fontScaleFactor).value
+                            }
+                            .measureText(test).dp
+                    }
+                    textSize = fontSize
+                    Log.d("rick", "textSize$textSize")
+                    fitSet = true
+                }
+            },
+        style = TextStyle(
+            fontSize = textSize,
+            textAlign = TextAlign.Center
+        ),
+        text = adjustNowString(text, test),
+        color = textColor,
+    )
 }
 
 fun adjustNowString(format: String?, test : String): String {

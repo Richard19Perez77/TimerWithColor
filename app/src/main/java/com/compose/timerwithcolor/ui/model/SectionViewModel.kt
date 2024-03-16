@@ -4,12 +4,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
 import com.compose.timerwithcolor.ui.theme.MikuPink
+import java.time.LocalDateTime
 
 class SectionViewModel : ViewModel() {
     var sections = mutableStateOf((mapOf<Int, SectionState>()))
 }
 
 class SectionState(var id: Int = 0) {
+    val time = mutableStateOf(LocalDateTime.now())
     val isFlashing = mutableStateOf(false)
     val bgColor = mutableStateOf(MikuDarkGreen)
     val textColor = mutableStateOf(MikuPink)
