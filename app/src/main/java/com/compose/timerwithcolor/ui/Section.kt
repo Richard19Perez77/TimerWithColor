@@ -1,7 +1,6 @@
 package com.compose.timerwithcolor.ui
 
 import android.graphics.Paint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -43,7 +42,7 @@ import kotlin.random.nextInt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Section(id: Int) {
-    val delayTime = 5L
+    val delayTime = 9L
     val sectionViewModel: SectionViewModel = viewModel()
     val sectionState = remember {
         sectionViewModel.sections.value.getOrDefault(id, SectionState(id))
@@ -334,7 +333,6 @@ fun FitText(
                             .measureText(timeState.value.format(formatter)).dp
                     }
                     textSize = fontSize
-                    Log.d("rick", "textSize$textSize")
                     fitSet = true
                 }
             },
