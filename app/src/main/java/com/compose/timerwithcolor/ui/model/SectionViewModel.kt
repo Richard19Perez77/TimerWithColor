@@ -7,10 +7,14 @@ import com.compose.timerwithcolor.ui.theme.MikuPink
 import java.time.LocalDateTime
 
 class SectionViewModel : ViewModel() {
-    var sections = mutableStateOf((mapOf<Int, SectionState>()))
+    val sections = mutableStateOf((mapOf<Int, SectionState>()))
+    enum class ColorMode {
+        RGB, HSV, RGB_COOL, RGB_WARM, HSV_WARM, HSV_COOL
+    }
 }
 
 class SectionState(var id: Int = 0) {
+    val colorMode = mutableStateOf(SectionViewModel.ColorMode.HSV_COOL)
     val time = mutableStateOf(LocalDateTime.now())
     val isFlashing = mutableStateOf(false)
     val bgColor = mutableStateOf(MikuDarkGreen)
