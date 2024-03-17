@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.compose.timerwithcolor.ui.model.ColorMode
 import com.compose.timerwithcolor.ui.model.SectionState
-import com.compose.timerwithcolor.ui.model.SectionViewModel
+import com.compose.timerwithcolor.ui.theme.MikuLightGreen
+import com.compose.timerwithcolor.ui.theme.MikuPink
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -43,9 +44,8 @@ fun Section(id: Int) {
     val delayTime = 5L
     val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
     val formatter = DateTimeFormatter.ofPattern(pattern)
-    val sectionViewModel: SectionViewModel = viewModel()
     val sectionState = remember {
-        sectionViewModel.sections.value.getOrDefault(id, SectionState(id))
+        SectionState(id)
     }
 
     LaunchedEffect(Unit) {
@@ -71,15 +71,16 @@ fun Section(id: Int) {
                 enabled = true,
                 onClick = {
                     sectionState.isFlashing.value = !sectionState.isFlashing.value
+                    if (!sectionState.isFlashing.value) {
+                        sectionState.bgColor.value = MikuLightGreen
+                        sectionState.textColor.value = MikuPink
+                    }
                 },
                 onLongClick = {
                     sectionState.addBlacks.value = !sectionState.addBlacks.value
                 },
                 onDoubleClick = {
                     rotateMode(sectionState)
-                    if (!sectionState.isFlashing.value) {
-                        colorUpdate(sectionState)
-                    }
                 },
             ),
         contentAlignment = Alignment.Center
@@ -87,27 +88,27 @@ fun Section(id: Int) {
         CurrentTime(
             sectionState.textColor.value,
             when (sectionState.colorMode.value) {
-                SectionViewModel.ColorMode.HSV_COOL -> {
+                ColorMode.HSV_COOL -> {
                     "HSV Cool"
                 }
 
-                SectionViewModel.ColorMode.HSV_WARM -> {
+                ColorMode.HSV_WARM -> {
                     "HSV Warm"
                 }
 
-                SectionViewModel.ColorMode.RGB_COOL -> {
+                ColorMode.RGB_COOL -> {
                     "RGB Cool"
                 }
 
-                SectionViewModel.ColorMode.RGB_WARM -> {
+                ColorMode.RGB_WARM -> {
                     "RBG Warm"
                 }
 
-                SectionViewModel.ColorMode.RGB -> {
+                ColorMode.RGB -> {
                     "RGB"
                 }
 
-                SectionViewModel.ColorMode.HSV -> {
+                ColorMode.HSV -> {
                     "HSV"
                 }
             },
@@ -123,7 +124,7 @@ fun Section(id: Int) {
 
 private fun colorUpdate(sectionState: SectionState) {
     when (sectionState.colorMode.value) {
-        SectionViewModel.ColorMode.RGB_COOL -> {
+        ColorMode.RGB_COOL -> {
             val max = 255
             var red = Random.nextInt(0..max)
             var blue = Random.nextInt(0..max)
@@ -159,7 +160,7 @@ private fun colorUpdate(sectionState: SectionState) {
             sectionState.textColor.value = warmColorRGBb
         }
 
-        SectionViewModel.ColorMode.RGB_WARM -> {
+        ColorMode.RGB_WARM -> {
             val max = 255
             var red = Random.nextInt(0..max)
             var blue = Random.nextInt(0..max)
@@ -195,7 +196,7 @@ private fun colorUpdate(sectionState: SectionState) {
             sectionState.textColor.value = warmColorRGBb
         }
 
-        SectionViewModel.ColorMode.HSV_WARM -> {
+        ColorMode.HSV_WARM -> {
             var hue = Random.nextFloat() * 360
             var sat = 1f // Random.nextFloat()
             var value = if (sectionState.addBlacks.value) {
@@ -227,7 +228,7 @@ private fun colorUpdate(sectionState: SectionState) {
             sectionState.textColor.value = warmColorHSVb
         }
 
-        SectionViewModel.ColorMode.HSV_COOL -> {
+        ColorMode.HSV_COOL -> {
             var hue = Random.nextFloat() * 360
             var sat = 1f
             var value = if (sectionState.addBlacks.value) {
@@ -260,7 +261,7 @@ private fun colorUpdate(sectionState: SectionState) {
             sectionState.textColor.value = coolHSVb
         }
 
-        SectionViewModel.ColorMode.RGB -> {
+        ColorMode.RGB -> {
             val max = 255
             var red = Random.nextInt(0..max)
             var blue = Random.nextInt(0..max)
@@ -286,7 +287,7 @@ private fun colorUpdate(sectionState: SectionState) {
             sectionState.textColor.value = warmColorRGBb
         }
 
-        SectionViewModel.ColorMode.HSV -> {
+        ColorMode.HSV -> {
             var hue = Random.nextFloat() * 360
             var sat = 1f
             var value = 1f
@@ -307,28 +308,28 @@ private fun colorUpdate(sectionState: SectionState) {
 
 private fun rotateMode(sectionState: SectionState) {
     when (sectionState.colorMode.value) {
-        SectionViewModel.ColorMode.HSV_COOL -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_WARM
+        ColorMode.HSV_COOL -> {
+            sectionState.colorMode.value = ColorMode.HSV_WARM
         }
 
-        SectionViewModel.ColorMode.HSV_WARM -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_COOL
+        ColorMode.HSV_WARM -> {
+            sectionState.colorMode.value = ColorMode.RGB_COOL
         }
 
-        SectionViewModel.ColorMode.RGB_COOL -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_WARM
+        ColorMode.RGB_COOL -> {
+            sectionState.colorMode.value = ColorMode.RGB_WARM
         }
 
-        SectionViewModel.ColorMode.RGB_WARM -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB
+        ColorMode.RGB_WARM -> {
+            sectionState.colorMode.value = ColorMode.RGB
         }
 
-        SectionViewModel.ColorMode.RGB -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV
+        ColorMode.RGB -> {
+            sectionState.colorMode.value = ColorMode.HSV
         }
 
-        SectionViewModel.ColorMode.HSV -> {
-            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_COOL
+        ColorMode.HSV -> {
+            sectionState.colorMode.value = ColorMode.HSV_COOL
         }
     }
 }
