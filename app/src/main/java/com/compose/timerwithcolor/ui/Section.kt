@@ -52,193 +52,8 @@ fun Section(id: Int) {
         while (true) {
             sectionState.time.value = LocalDateTime.now()
 
-            if (sectionState.isFlashing.value){
-                when(sectionState.colorMode.value){
-                    SectionViewModel.ColorMode.RGB_COOL -> {
-                        val max = 255
-                        var red = Random.nextInt(0..max)
-                        var blue = Random.nextInt(0..max)
-                        var green = Random.nextInt(0..max)
-
-                        while (red >= blue) {
-                            red = Random.nextInt(0..max)
-                            blue = Random.nextInt(0..max)
-                        }
-
-                        val warmColorRGBa = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        red = Random.nextInt(0..max)
-                        blue = Random.nextInt(0..max)
-                        green = Random.nextInt(0..max)
-
-                        while (red < blue) {
-                            red = Random.nextInt(0..max)
-                            blue = Random.nextInt(0..max)
-                        }
-
-                        val warmColorRGBb = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        sectionState.bgColor.value = warmColorRGBa
-                        sectionState.textColor.value = warmColorRGBb
-                    }
-                    SectionViewModel.ColorMode.RGB_WARM -> {
-                        val max = 255
-                        var red = Random.nextInt(0..max)
-                        var blue = Random.nextInt(0..max)
-                        var green = Random.nextInt(0..max)
-
-                        while (red < blue) {
-                            red = Random.nextInt(0..max)
-                            blue = Random.nextInt(0..max)
-                        }
-
-                        val warmColorRGBa = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        red = Random.nextInt(0..max)
-                        blue = Random.nextInt(0..max)
-                        green = Random.nextInt(0..max)
-
-                        while (red < blue) {
-                            red = Random.nextInt(0..max)
-                            blue = Random.nextInt(0..max)
-                        }
-
-                        val warmColorRGBb = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        sectionState.bgColor.value = warmColorRGBa
-                        sectionState.textColor.value = warmColorRGBb
-                    }
-                    SectionViewModel.ColorMode.HSV_WARM -> {
-                        var hue = Random.nextFloat() * 360
-                        var sat = 1f // Random.nextFloat()
-                        var value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        while (hue > 90 && hue < 270) {
-                            hue = Random.nextFloat() * 360
-                        }
-
-                        val warmColorHSVa = Color.hsv(hue, sat, value)
-
-                        hue = Random.nextFloat() * 360
-                        sat = 1f
-                        value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        while (hue > 90 && hue < 270) {
-                            hue = Random.nextFloat() * 360
-                        }
-                        val warmColorHSVb = Color.hsv(hue, sat, value)
-
-                        sectionState.bgColor.value = warmColorHSVa
-                        sectionState.textColor.value = warmColorHSVb
-                    }
-                    SectionViewModel.ColorMode.HSV_COOL -> {
-                        var hue = Random.nextFloat() * 360
-                        var sat = 1f
-                        var value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        while (hue < 90 || hue > 270) {
-                            hue = Random.nextFloat() * 360
-                        }
-
-                        val coolHSVa = Color.hsv(hue, sat, value)
-
-                        hue = Random.nextFloat() * 360
-                        sat = 1f
-                        value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        while (hue < 90 || hue > 270) {
-                            hue = Random.nextFloat() * 360
-                        }
-
-                        val coolHSVb = Color.hsv(hue, sat, value)
-
-                        sectionState.bgColor.value = coolHSVa
-                        sectionState.textColor.value = coolHSVb
-                    }
-
-                    SectionViewModel.ColorMode.RGB -> {
-                        val max = 255
-                        var red = Random.nextInt(0..max)
-                        var blue = Random.nextInt(0..max)
-                        var green = Random.nextInt(0..max)
-
-                        val warmColorRGBa = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        red = Random.nextInt(0..max)
-                        blue = Random.nextInt(0..max)
-                        green = Random.nextInt(0..max)
-
-                        val warmColorRGBb = Color(
-                            red = red,
-                            blue = blue,
-                            green = green
-                        )
-
-                        sectionState.bgColor.value = warmColorRGBa
-                        sectionState.textColor.value = warmColorRGBb
-                    }
-                    SectionViewModel.ColorMode.HSV -> {
-                        var hue = Random.nextFloat() * 360
-                        var sat = 1f
-                        var value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        val coolHSVa = Color.hsv(hue, sat, value)
-
-                        hue = Random.nextFloat() * 360
-                        sat = 1f
-                        value = if (sectionState.addBlacks.value) {
-                            Random.nextFloat() * (1f - .10f) + .10f
-                        } else {
-                            1f
-                        }
-
-                        val coolHSVb = Color.hsv(hue, sat, value)
-
-                        sectionState.bgColor.value = coolHSVa
-                        sectionState.textColor.value = coolHSVb
-
-                    }
-                }
+            if (sectionState.isFlashing.value) {
+                colorUpdate(sectionState)
             }
 
             delay(delayTime)
@@ -261,25 +76,9 @@ fun Section(id: Int) {
                     sectionState.addBlacks.value = !sectionState.addBlacks.value
                 },
                 onDoubleClick = {
-                    when (sectionState.colorMode.value) {
-                        SectionViewModel.ColorMode.HSV_COOL -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_WARM
-                        }
-                        SectionViewModel.ColorMode.HSV_WARM -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_COOL
-                        }
-                        SectionViewModel.ColorMode.RGB_COOL -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_WARM
-                        }
-                        SectionViewModel.ColorMode.RGB_WARM -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB
-                        }
-                        SectionViewModel.ColorMode.RGB -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV
-                        }
-                        SectionViewModel.ColorMode.HSV -> {
-                            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_COOL
-                        }
+                    rotateMode(sectionState)
+                    if (!sectionState.isFlashing.value) {
+                        colorUpdate(sectionState)
                     }
                 },
             ),
@@ -287,22 +86,27 @@ fun Section(id: Int) {
     ) {
         CurrentTime(
             sectionState.textColor.value,
-            when(sectionState.colorMode.value){
+            when (sectionState.colorMode.value) {
                 SectionViewModel.ColorMode.HSV_COOL -> {
                     "HSV Cool"
                 }
+
                 SectionViewModel.ColorMode.HSV_WARM -> {
                     "HSV Warm"
                 }
+
                 SectionViewModel.ColorMode.RGB_COOL -> {
                     "RGB Cool"
                 }
+
                 SectionViewModel.ColorMode.RGB_WARM -> {
                     "RBG Warm"
                 }
+
                 SectionViewModel.ColorMode.RGB -> {
                     "RGB"
                 }
+
                 SectionViewModel.ColorMode.HSV -> {
                     "HSV"
                 }
@@ -317,8 +121,220 @@ fun Section(id: Int) {
     }
 }
 
+private fun colorUpdate(sectionState: SectionState) {
+    when (sectionState.colorMode.value) {
+        SectionViewModel.ColorMode.RGB_COOL -> {
+            val max = 255
+            var red = Random.nextInt(0..max)
+            var blue = Random.nextInt(0..max)
+            var green = Random.nextInt(0..max)
+
+            while (red >= blue) {
+                red = Random.nextInt(0..max)
+                blue = Random.nextInt(0..max)
+            }
+
+            val warmColorRGBa = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+            green = Random.nextInt(0..max)
+
+            while (red < blue) {
+                red = Random.nextInt(0..max)
+                blue = Random.nextInt(0..max)
+            }
+
+            val warmColorRGBb = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            sectionState.bgColor.value = warmColorRGBa
+            sectionState.textColor.value = warmColorRGBb
+        }
+
+        SectionViewModel.ColorMode.RGB_WARM -> {
+            val max = 255
+            var red = Random.nextInt(0..max)
+            var blue = Random.nextInt(0..max)
+            var green = Random.nextInt(0..max)
+
+            while (red < blue) {
+                red = Random.nextInt(0..max)
+                blue = Random.nextInt(0..max)
+            }
+
+            val warmColorRGBa = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+            green = Random.nextInt(0..max)
+
+            while (red < blue) {
+                red = Random.nextInt(0..max)
+                blue = Random.nextInt(0..max)
+            }
+
+            val warmColorRGBb = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            sectionState.bgColor.value = warmColorRGBa
+            sectionState.textColor.value = warmColorRGBb
+        }
+
+        SectionViewModel.ColorMode.HSV_WARM -> {
+            var hue = Random.nextFloat() * 360
+            var sat = 1f // Random.nextFloat()
+            var value = if (sectionState.addBlacks.value) {
+                Random.nextFloat() * (1f - .10f) + .10f
+            } else {
+                1f
+            }
+
+            while (hue > 90 && hue < 270) {
+                hue = Random.nextFloat() * 360
+            }
+
+            val warmColorHSVa = Color.hsv(hue, sat, value)
+
+            hue = Random.nextFloat() * 360
+            sat = 1f
+            value = if (sectionState.addBlacks.value) {
+                Random.nextFloat() * (1f - .10f) + .10f
+            } else {
+                1f
+            }
+
+            while (hue > 90 && hue < 270) {
+                hue = Random.nextFloat() * 360
+            }
+            val warmColorHSVb = Color.hsv(hue, sat, value)
+
+            sectionState.bgColor.value = warmColorHSVa
+            sectionState.textColor.value = warmColorHSVb
+        }
+
+        SectionViewModel.ColorMode.HSV_COOL -> {
+            var hue = Random.nextFloat() * 360
+            var sat = 1f
+            var value = if (sectionState.addBlacks.value) {
+                Random.nextFloat() * (1f - .10f) + .10f
+            } else {
+                1f
+            }
+
+            while (hue < 90 || hue > 270) {
+                hue = Random.nextFloat() * 360
+            }
+
+            val coolHSVa = Color.hsv(hue, sat, value)
+
+            hue = Random.nextFloat() * 360
+            sat = 1f
+            value = if (sectionState.addBlacks.value) {
+                Random.nextFloat() * (1f - .10f) + .10f
+            } else {
+                1f
+            }
+
+            while (hue < 90 || hue > 270) {
+                hue = Random.nextFloat() * 360
+            }
+
+            val coolHSVb = Color.hsv(hue, sat, value)
+
+            sectionState.bgColor.value = coolHSVa
+            sectionState.textColor.value = coolHSVb
+        }
+
+        SectionViewModel.ColorMode.RGB -> {
+            val max = 255
+            var red = Random.nextInt(0..max)
+            var blue = Random.nextInt(0..max)
+            var green = Random.nextInt(0..max)
+
+            val warmColorRGBa = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+            green = Random.nextInt(0..max)
+
+            val warmColorRGBb = Color(
+                red = red,
+                blue = blue,
+                green = green
+            )
+
+            sectionState.bgColor.value = warmColorRGBa
+            sectionState.textColor.value = warmColorRGBb
+        }
+
+        SectionViewModel.ColorMode.HSV -> {
+            var hue = Random.nextFloat() * 360
+            var sat = 1f
+            var value = 1f
+
+            val coolHSVa = Color.hsv(hue, sat, value)
+
+            hue = Random.nextFloat() * 360
+            sat = 1f
+            value = 1f
+
+            val coolHSVb = Color.hsv(hue, sat, value)
+
+            sectionState.bgColor.value = coolHSVa
+            sectionState.textColor.value = coolHSVb
+        }
+    }
+}
+
+private fun rotateMode(sectionState: SectionState) {
+    when (sectionState.colorMode.value) {
+        SectionViewModel.ColorMode.HSV_COOL -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_WARM
+        }
+
+        SectionViewModel.ColorMode.HSV_WARM -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_COOL
+        }
+
+        SectionViewModel.ColorMode.RGB_COOL -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB_WARM
+        }
+
+        SectionViewModel.ColorMode.RGB_WARM -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.RGB
+        }
+
+        SectionViewModel.ColorMode.RGB -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV
+        }
+
+        SectionViewModel.ColorMode.HSV -> {
+            sectionState.colorMode.value = SectionViewModel.ColorMode.HSV_COOL
+        }
+    }
+}
+
 @Composable
-fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text : String) {
+fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: String) {
     Column {
         Text(
             modifier = Modifier
@@ -349,7 +365,7 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text :
 }
 
 @Composable
-fun FitText(modifier : Modifier = Modifier, text: String, textColor: Color) {
+fun FitText(modifier: Modifier = Modifier, text: String, textColor: Color) {
     var textSize by remember { mutableStateOf(0.sp) }
     var fitSet by remember { mutableStateOf(false) }
     val localDensity = LocalDensity.current
@@ -408,11 +424,11 @@ fun FitText(modifier : Modifier = Modifier, text: String, textColor: Color) {
     )
 }
 
-fun adjustNowString(format: String?, test : String): String {
-    val sb : StringBuilder = java.lang.StringBuilder()
+fun adjustNowString(format: String?, test: String): String {
+    val sb: StringBuilder = java.lang.StringBuilder()
     sb.append(format)
     format.let {
-        if (it?.length!! < test.length){
+        if (it?.length!! < test.length) {
             sb.append("0")
         }
     }

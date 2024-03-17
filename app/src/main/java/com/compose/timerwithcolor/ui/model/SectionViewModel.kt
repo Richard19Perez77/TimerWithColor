@@ -13,13 +13,11 @@ class SectionViewModel : ViewModel() {
     }
 }
 
-class SectionState(var id: Int = 0) {
-    val colorMode = mutableStateOf(SectionViewModel.ColorMode.HSV_COOL)
+data class SectionState(val id: Int = 0) {
+    val colorMode = mutableStateOf(SectionViewModel.ColorMode.HSV)
     val time = mutableStateOf(LocalDateTime.now())
     val isFlashing = mutableStateOf(false)
     val bgColor = mutableStateOf(MikuDarkGreen)
     val textColor = mutableStateOf(MikuPink)
-    val isWarm = mutableStateOf(false)
     val addBlacks = mutableStateOf(false)
-    val isHSV = mutableStateOf(true)
 }
