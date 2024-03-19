@@ -2,18 +2,7 @@ package com.compose.timerwithcolor.ui.model
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.compose.timerwithcolor.ui.theme.MikuDarkGreen
-import com.compose.timerwithcolor.ui.theme.MikuPink
 
 class SectionViewModel : ViewModel() {
-    var sections = mutableStateOf((mapOf<Int, SectionState>()))
-}
-
-class SectionState(var id: Int = 0) {
-    val isFlashing = mutableStateOf(false)
-    val bgColor = mutableStateOf(MikuDarkGreen)
-    val textColor = mutableStateOf(MikuPink)
-    val isWarm = mutableStateOf(false)
-    val addBlacks = mutableStateOf(false)
-    val isHSV = mutableStateOf(true)
+    val sections = mutableStateOf((mapOf<Int, SectionState>()))
 }
