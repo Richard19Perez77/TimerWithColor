@@ -1,7 +1,7 @@
 package com.compose.timerwithcolor.ui
 
+import com.compose.timerwithcolor.R
 import android.graphics.Paint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -13,17 +13,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -41,8 +43,8 @@ import kotlin.random.nextInt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Section(id: Int) {
-    val delayTime = 5L
-    val pattern = "yyyy-MM-dd HH:mm:ss.SSS"
+    val delayTime = 16L
+    val pattern = "MM-dd-yyyy HH:mm:ss.SSS"
     val formatter = DateTimeFormatter.ofPattern(pattern)
     val sectionState = remember {
         SectionState(id)
@@ -367,72 +369,63 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
 
 @Composable
 fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
-    var textSize by remember { mutableStateOf(0.sp) }
-    var fitSet by remember { mutableStateOf(false) }
+    var textSizeState = remember { mutableStateOf(0.sp) }
+    var fontScaleSet = remember { mutableStateOf(false) }
+
     val localDensity = LocalDensity.current
     val fontScaleFactor = LocalDensity.current.fontScale
-    val test = "0000-00-00 00:00:00.000"
-    val text = adjustNowString(input, test)
+    var floatForScale = remember { mutableFloatStateOf(0f) }
+
+    val courierFont = FontFamily(
+        Font(R.font.courier)
+    )
+
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(0.dp)
-            .onSizeChanged {
-                if (!fitSet) {
-                    val columnWidthDp = with(localDensity) { it.width.toDp() }
-                    var fontSize = TextUnit(1f * fontScaleFactor, TextUnitType.Sp)
-                    var result = Paint()
+            .onSizeChanged { it ->
+                if (!fontScaleSet.value) {
+
+                    var columnWidthDp = with(localDensity) { it.width.toDp() }
+                    var fontSize =
+                        TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
+                    var result: Dp = Paint()
                         .apply {
-                            this.textSize = fontSize.value
+                            textSize = fontSize
                         }
-                        .measureText(test).dp
+                        .measureText(input).dp
 
                     while (result < columnWidthDp) {
-                        fontSize.value
-                            .inc()
-                            .also { value ->
-                                fontSize = value.sp
-                            }
+                        floatForScale.value += 1f
+                        fontSize =
+                            TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
                         result = Paint()
                             .apply {
-                                this.textSize = (fontSize * fontScaleFactor).value
+                                textSize = fontSize
                             }
-                            .measureText(test).dp
+                            .measureText(input).dp
                     }
 
-                    while (result >= columnWidthDp) {
-                        fontSize.value
-                            .dec()
-                            .also { value ->
-                                fontSize = value.sp
-                            }
-                        result = Paint()
-                            .apply {
-                                this.textSize = (fontSize * fontScaleFactor).value
-                            }
-                            .measureText(test).dp
-                    }
-                    textSize = fontSize
-                    Log.d("rick", "textSize$textSize")
-                    fitSet = true
+                    floatForScale.value -= 7f
+                    fontSize =
+                        TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
+                    result = Paint()
+                        .apply {
+                            textSize = fontSize
+                        }
+                        .measureText(input).dp
+
+                    textSizeState.value = fontSize.sp
+                    fontScaleSet.value = true
                 }
             },
         style = TextStyle(
-            fontSize = textSize,
-            textAlign = TextAlign.Center
+            fontFamily = courierFont,
+            fontSize = textSizeState.value,
+            textAlign = TextAlign.Center,
         ),
-        text = adjustNowString(text, test),
+        text = input,
         color = textColor,
     )
-}
-
-fun adjustNowString(format: String?, test: String): String {
-    val sb: StringBuilder = java.lang.StringBuilder()
-    sb.append(format)
-    format.let {
-        if (it?.length!! < test.length) {
-            sb.append("0")
-        }
-    }
-    return sb.toString()
 }
