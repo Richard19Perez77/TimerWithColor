@@ -366,12 +366,13 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
 }
 
 @Composable
-fun FitText(modifier: Modifier = Modifier, text: String, textColor: Color) {
+fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
     var textSize by remember { mutableStateOf(0.sp) }
     var fitSet by remember { mutableStateOf(false) }
     val localDensity = LocalDensity.current
     val fontScaleFactor = LocalDensity.current.fontScale
     val test = "0000-00-00 00:00:00.000"
+    val text = adjustNowString(input, test)
     Text(
         modifier = Modifier
             .fillMaxWidth()
