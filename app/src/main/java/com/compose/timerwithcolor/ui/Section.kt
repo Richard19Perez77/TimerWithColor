@@ -338,12 +338,17 @@ private fun rotateMode(sectionState: SectionState) {
 
 @Composable
 fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: String) {
+    val font = FontFamily(
+        Font(R.font.roboto_regular)
+    )
+
     Column {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(0.dp),
             style = TextStyle(
+                fontFamily = font,
                 fontSize = 28.sp,
                 textAlign = TextAlign.Center
             ),
@@ -358,6 +363,7 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
                 .fillMaxWidth()
                 .padding(0.dp),
             style = TextStyle(
+                fontFamily = font,
                 fontSize = 28.sp,
                 textAlign = TextAlign.Center
             ),
@@ -376,8 +382,8 @@ fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
     val fontScaleFactor = LocalDensity.current.fontScale
     var floatForScale = remember { mutableFloatStateOf(0f) }
 
-    val courierFont = FontFamily(
-        Font(R.font.courier)
+    val font = FontFamily(
+        Font(R.font.roboto_regular)
     )
 
     Text(
@@ -399,7 +405,10 @@ fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
                     while (result < columnWidthDp) {
                         floatForScale.value += 1f
                         fontSize =
-                            TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
+                            TextUnit(
+                                floatForScale.floatValue * fontScaleFactor,
+                                TextUnitType.Sp
+                            ).value
                         result = Paint()
                             .apply {
                                 textSize = fontSize
@@ -421,7 +430,7 @@ fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
                 }
             },
         style = TextStyle(
-            fontFamily = courierFont,
+            fontFamily = font,
             fontSize = textSizeState.value,
             textAlign = TextAlign.Center,
         ),
