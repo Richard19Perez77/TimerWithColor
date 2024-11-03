@@ -25,12 +25,9 @@ import com.compose.timerwithcolor.R
 
 @Composable
 fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
-    var textSizeState = remember { mutableStateOf(0.sp) }
+    var textSizeState = remember { mutableFloatStateOf(1.0f) }
     var fontScaleSet = remember { mutableStateOf(false) }
-
     val localDensity = LocalDensity.current
-    val fontScaleFactor = LocalDensity.current.fontScale
-    var floatForScale = remember { mutableFloatStateOf(0f) }
 
     val font = FontFamily(
         Font(R.font.roboto_regular)
@@ -42,48 +39,31 @@ fun FitText(modifier: Modifier = Modifier, input: String, textColor: Color) {
             .padding(0.dp)
             .onSizeChanged { it ->
                 if (!fontScaleSet.value) {
-
                     var columnWidthDp = with(localDensity) { it.width.toDp() }
-                    var fontSize =
-                        TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
                     var result: Dp = Paint()
                         .apply {
-                            textSize = fontSize
+                            textSize = textSizeState.floatValue
                         }
                         .measureText(input).dp
 
                     while (result < columnWidthDp) {
-                        floatForScale.value += 1f
-                        fontSize =
-                            TextUnit(
-                                floatForScale.floatValue * fontScaleFactor,
-                                TextUnitType.Sp
-                            ).value
+                        textSizeState.floatValue = textSizeState.floatValue.inc()
                         result = Paint()
                             .apply {
-                                textSize = fontSize
+                                textSize = textSizeState.floatValue
                             }
                             .measureText(input).dp
                     }
 
-                    floatForScale.value -= 7f
-                    fontSize =
-                        TextUnit(floatForScale.floatValue * fontScaleFactor, TextUnitType.Sp).value
-                    result = Paint()
-                        .apply {
-                            textSize = fontSize
-                        }
-                        .measureText(input).dp
-
-                    textSizeState.value = fontSize.sp
+                    textSizeState.floatValue = textSizeState.floatValue.dec()
                     fontScaleSet.value = true
                 }
             },
         style = TextStyle(
             fontFamily = font,
-            fontSize = textSizeState.value,
             textAlign = TextAlign.Center,
         ),
+        fontSize = textSizeState.floatValue.sp,
         text = input,
         color = textColor,
     )
