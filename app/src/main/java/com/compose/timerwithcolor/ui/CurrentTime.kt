@@ -35,18 +35,7 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
             color = textColor,
         )
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp),
-            style = TextStyle(
-                fontFamily = font,
-                fontSize = 28.sp,
-                textAlign = TextAlign.Center
-            ),
-            text = text,
-            color = textColor,
-        )
+        ColorText(Modifier, text, textColor)
 
         Text(
             modifier = Modifier
