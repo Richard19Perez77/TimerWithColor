@@ -35,7 +35,7 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
             color = textColor,
         )
 
-        FitText(Modifier, text, textColor)
+        ColorText(Modifier, text, textColor)
 
         Text(
             modifier = Modifier
