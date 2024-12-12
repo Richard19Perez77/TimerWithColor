@@ -1,9 +1,7 @@
 package com.compose.timerwithcolor
 
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.view.WindowCompat
