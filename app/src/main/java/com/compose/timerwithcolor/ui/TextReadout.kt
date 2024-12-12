@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,11 +22,11 @@ fun TextReadout(textColor: Color, tempColor: String, hasDarkness: String, text: 
         Font(R.font.roboto_regular)
     )
 
-    Column {
+    Column(modifier = Modifier.padding(8.dp)) {
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp),
+                .padding(bottom = 28.dp)
+                .fillMaxWidth(),
             style = TextStyle(
                 fontFamily = font,
                 fontSize = 28.sp,
@@ -37,11 +38,11 @@ fun TextReadout(textColor: Color, tempColor: String, hasDarkness: String, text: 
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp),
+                .fillMaxWidth(),
             style = TextStyle(
+                fontWeight = FontWeight.Bold,
                 fontFamily = font,
-                fontSize = 24.sp,
+                fontSize = 36.sp,
                 textAlign = TextAlign.Center,
             ),
             text = text,
@@ -50,8 +51,8 @@ fun TextReadout(textColor: Color, tempColor: String, hasDarkness: String, text: 
 
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp),
+                .padding(top = 28.dp)
+                .fillMaxWidth(),
             style = TextStyle(
                 fontFamily = font,
                 fontSize = 28.sp,

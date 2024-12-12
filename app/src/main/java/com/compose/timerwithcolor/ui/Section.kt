@@ -27,7 +27,7 @@ import kotlin.random.nextInt
 @Composable
 fun Section(id: Int) {
     val delayTime = 16L
-    val pattern = "MM-dd-yyyy HH:mm:ss.SSS"
+    val pattern = "HH:mm:ss.SSS"
     val formatter = DateTimeFormatter.ofPattern(pattern)
     val sectionState = remember {
         SectionState(id)
@@ -47,7 +47,6 @@ fun Section(id: Int) {
 
     Box(
         modifier = Modifier
-            .padding(0.dp)
             .fillMaxSize()
             .background(
                 sectionState.bgColor.value

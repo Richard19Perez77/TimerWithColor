@@ -19,33 +19,23 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TimerWithColorTheme {
-                Surface(
+                var id = 0
+                Column(
                     modifier = Modifier
-                        .padding(0.dp)
                         .fillMaxSize(),
-                    color = Color.Black,
                 ) {
-                    var id = 0
-                    Column(
+                    Row(
                         modifier = Modifier
-                            .padding(0.dp)
-                            .fillMaxSize(),
+                            .weight(1f)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(0.dp)
-                                .weight(1f)
-                        ) {
-                            Section(id++)
-                        }
+                        Section(id++)
+                    }
 //                        Row(
 //                            modifier = Modifier
-//                                .padding(0.dp)
 //                                .weight(1f)
 //                        ) {
 //                            Section(id++)
 //                        }
-                    }
                 }
             }
         }

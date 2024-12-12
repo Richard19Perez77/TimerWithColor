@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 
 open class BaseActivity : ComponentActivity() {
 
-    private fun setFullscreen(activity: Activity) {
+    private fun enableFullscreenMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             WindowInsetsControllerCompat(window, window.decorView).apply {
@@ -22,7 +22,7 @@ open class BaseActivity : ComponentActivity() {
             }
         } else {
             @Suppress("DEPRECATION")
-            activity.window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility =
                 (View.SYSTEM_UI_FLAG_IMMERSIVE
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -32,8 +32,8 @@ open class BaseActivity : ComponentActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        setFullscreen(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableFullscreenMode()
     }
 }
