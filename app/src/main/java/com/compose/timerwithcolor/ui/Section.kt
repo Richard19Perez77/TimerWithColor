@@ -70,7 +70,7 @@ fun Section(id: Int) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        CurrentTime(
+        TextReadout(
             sectionState.textColor.value,
             when (sectionState.colorMode.value) {
                 ColorMode.HSV_COOL -> {

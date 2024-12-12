@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.compose.timerwithcolor.R
 
 @Composable
-fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: String) {
+fun TextReadout(textColor: Color, tempColor: String, hasDarkness: String, text: String) {
     val font = FontFamily(
         Font(R.font.roboto_regular)
     )
@@ -35,7 +35,18 @@ fun CurrentTime(textColor: Color, tempColor: String, hasDarkness: String, text: 
             color = textColor,
         )
 
-        ColorText(Modifier, text, textColor)
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp),
+            style = TextStyle(
+                fontFamily = font,
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+            ),
+            text = text,
+            color = textColor,
+        )
 
         Text(
             modifier = Modifier
