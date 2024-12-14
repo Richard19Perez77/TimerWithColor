@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class DoubleClickTest {
 
     val BASIC_SAMPLE_PACKAGE = "com.compose.timerwithcolor"
     val LAUNCH_TIMEOUT = 5000L
