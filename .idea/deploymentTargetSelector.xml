@@ -8,7 +8,16 @@
       <SelectionState runConfigName="SectionInstrumentedTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testSectionBoxExists()">
+      <SelectionState runConfigName="testTemp1TextHSVExists()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testDarkness1TextHasDarknessExists()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testSection1BoxExists()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testTemp1TextExists()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
