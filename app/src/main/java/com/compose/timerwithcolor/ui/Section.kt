@@ -42,7 +42,6 @@ fun Section(id: Int) {
                 sectionState.bgColor.value
             )
             .combinedClickable(
-                enabled = true,
                 onClick = {
                     sectionState.toggleColorFlash()
                 },
