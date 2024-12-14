@@ -56,6 +56,7 @@ fun Section(id: Int) {
         contentAlignment = Alignment.Center
     ) {
         TextReadout(
+            id,
             sectionState.textColor.value,
             sectionState.displayName,
             sectionState.getDarknessString(),

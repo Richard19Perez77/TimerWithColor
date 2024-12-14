@@ -20,8 +20,26 @@ class SectionInstrumentedTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun testSectionBoxExists() {
+    fun testSection1BoxExists() {
         var id = 1
         composeTestRule.onNodeWithTag("Section{$id}Box").isDisplayed()
+    }
+
+    @Test
+    fun testTemp1TextExists() {
+        var id = 1
+        composeTestRule.onNodeWithTag("Temp{$id}Text").isDisplayed()
+    }
+
+    @Test
+    fun testTimer1TextExists() {
+        var id = 1
+        composeTestRule.onNodeWithTag("Timer{$id}Text").isDisplayed()
+    }
+
+    @Test
+    fun testDarkness1TextExists() {
+        var id = 1
+        composeTestRule.onNodeWithTag("Darkness{$id}Text").isDisplayed()
     }
 }

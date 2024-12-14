@@ -26,12 +26,12 @@ class MainActivity : BaseActivity() {
                     ) {
                         Section(id++)
                     }
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Section(id++)
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .weight(1f)
+//                    ) {
+//                        Section(id++)
+//                    }
                 }
             }
         }
