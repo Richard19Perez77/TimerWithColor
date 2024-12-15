@@ -51,7 +51,7 @@ class LongClickTest {
 
         device.click(x, y)
         Thread.sleep(50)
-        device.click(x,y)
+        device.click(x, y)
         Thread.sleep(50)
 
         var text = device.findObject(By.text("HSV Cool"))
@@ -71,7 +71,7 @@ class LongClickTest {
 
         device.click(x, y)
         Thread.sleep(50)
-        device.click(x,y)
+        device.click(x, y)
         Thread.sleep(50)
 
         var text = device.findObject(By.text("HSV Cool"))
