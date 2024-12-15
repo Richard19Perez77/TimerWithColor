@@ -31,7 +31,6 @@ class MainActivity : BaseActivity() {
                     Row(
                         modifier = Modifier
                             .weight(1f)
-                            .testTag("rootRow")
                     ) {
                         Section(id++)
                     }
