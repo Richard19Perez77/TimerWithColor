@@ -14,6 +14,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * Long click tests will test the label for if there is darkness or not
+ */
 @RunWith(AndroidJUnit4::class)
 class LongClickTest {
 
@@ -46,10 +49,18 @@ class LongClickTest {
         val x = device.displayWidth / 2
         val y = device.displayHeight / 2
 
+        device.click(x, y)
+        Thread.sleep(50)
+        device.click(x,y)
+        Thread.sleep(50)
+
+        var text = device.findObject(By.text("HSV Cool"))
+        assert(!text.isClickable)
+
         val duration = 100
         device.swipe(x, y, x, y, duration)
 
-        val text = device.findObject(By.text("With Darkness"))
+        text = device.findObject(By.text("With Darkness"))
         assert(!text.isClickable)
     }
 
@@ -58,12 +69,20 @@ class LongClickTest {
         val x = device.displayWidth / 2
         val y = device.displayHeight / 2
 
+        device.click(x, y)
+        Thread.sleep(50)
+        device.click(x,y)
+        Thread.sleep(50)
+
+        var text = device.findObject(By.text("HSV Cool"))
+        assert(!text.isClickable)
+
         val duration = 100
         device.swipe(x, y, x, y, duration)
         Thread.sleep(50)
         device.swipe(x, y, x, y, duration)
 
-        val text = device.findObject(By.text("No Darkness"))
+        text = device.findObject(By.text("No Darkness"))
         assert(!text.isClickable)
     }
 }
