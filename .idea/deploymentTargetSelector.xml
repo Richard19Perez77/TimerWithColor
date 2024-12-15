@@ -11,13 +11,13 @@
       <SelectionState runConfigName="Tests in 'com.compose.timerwithcolor'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="ColorChangeClickTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="colorClickTest1()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="colorClickTest0()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="longClickTest1()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
