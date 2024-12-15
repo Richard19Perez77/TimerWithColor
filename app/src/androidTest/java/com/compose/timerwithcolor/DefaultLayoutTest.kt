@@ -11,6 +11,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+const val id = 0
+
 @RunWith(AndroidJUnit4::class)
 class DefaultLayoutTest {
 
@@ -19,7 +21,6 @@ class DefaultLayoutTest {
 
     @Test
     fun testSection1BoxExists() {
-        val id = 0
         val interaction = composeTestRule.onNodeWithTag("Section{$id}Box")
         composeTestRule.waitUntil { interaction.isDisplayed() }
     }

@@ -19,6 +19,7 @@ import com.compose.timerwithcolor.R
 
 @Composable
 fun TextReadout(id: Int, textColor: Color, tempColor: String, hasDarkness: String, text: String) {
+
     val font = FontFamily(
         Font(R.font.roboto_regular)
     )

@@ -14,13 +14,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class LongClickTest {
-
-    val BASIC_SAMPLE_PACKAGE = "com.compose.timerwithcolor"
-    val LAUNCH_TIMEOUT = 5000L
-    val STRING_TO_BE_TYPED = "UiAutomator"
 
     private lateinit var device: UiDevice
 

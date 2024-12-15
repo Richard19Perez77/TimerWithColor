@@ -19,12 +19,12 @@ import java.io.File
 import java.util.UUID
 import kotlin.math.abs
 
+const val BASIC_SAMPLE_PACKAGE = "com.compose.timerwithcolor"
+const val LAUNCH_TIMEOUT = 5000L
+const val STRING_TO_BE_TYPED = "UiAutomator"
+
 @RunWith(AndroidJUnit4::class)
 class ColorChangeClickTest {
-
-    val BASIC_SAMPLE_PACKAGE = "com.compose.timerwithcolor"
-    val LAUNCH_TIMEOUT = 5000L
-    val STRING_TO_BE_TYPED = "UiAutomator"
 
     private lateinit var device: UiDevice
 
