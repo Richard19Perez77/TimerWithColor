@@ -8,6 +8,9 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
+/**
+ * The BaseActivity class will enable full screen mode for devices and allow for as much space as possible based on SDK version.
+ */
 open class BaseActivity : ComponentActivity() {
 
     private fun enableFullscreenMode() {

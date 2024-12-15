@@ -9,6 +9,9 @@ import java.time.LocalDateTime
 import kotlin.random.Random
 import kotlin.random.nextInt
 
+/**
+ * Data Class SectionState holds the variables for each Section composable and does the work to transform text as needed and find new colors as needed.
+ */
 data class SectionState(val id: Int = 0) {
 
     val colorMode = mutableStateOf(ColorMode.HSV)
@@ -18,6 +21,10 @@ data class SectionState(val id: Int = 0) {
 
     val textColor = mutableStateOf(MikuPink)
     val addBlack = mutableStateOf(false)
+
+    /**
+     * Get display name based on ColorMode
+     */
     val displayName: String
         get() = when (colorMode.value) {
             ColorMode.HSV_COOL -> "HSV Cool"
@@ -28,6 +35,9 @@ data class SectionState(val id: Int = 0) {
             ColorMode.HSV -> "HSV"
         }
 
+    /**
+     * Sets new color mode based on previous mode, cycles through ColorMode.
+     */
     fun rotateMode() {
         when (this.colorMode.value) {
             ColorMode.HSV_COOL -> this.colorMode.value = ColorMode.HSV_WARM
@@ -39,8 +49,12 @@ data class SectionState(val id: Int = 0) {
         }
     }
 
+    /**
+     * Based on temperature and color set RGB or HSV create random colors
+     */
     fun colorUpdate() {
         when (this.colorMode.value) {
+            // RGB with Blue as higher than Red
             ColorMode.RGB_COOL -> {
                 val max = 255
                 var red = Random.nextInt(0..max)
@@ -76,7 +90,7 @@ data class SectionState(val id: Int = 0) {
                 this.bgColor.value = warmColorRGBa
                 this.textColor.value = warmColorRGBb
             }
-
+            // RGB with Red higher than Blue
             ColorMode.RGB_WARM -> {
                 val max = 255
                 var red = Random.nextInt(0..max)
@@ -112,7 +126,7 @@ data class SectionState(val id: Int = 0) {
                 this.bgColor.value = warmColorRGBa
                 this.textColor.value = warmColorRGBb
             }
-
+            // HSV with Red higher than Blue
             ColorMode.HSV_WARM -> {
                 var hue = Random.nextFloat() * 360
                 var sat = 1f // Random.nextFloat()
@@ -144,7 +158,7 @@ data class SectionState(val id: Int = 0) {
                 this.bgColor.value = warmColorHSVa
                 this.textColor.value = warmColorHSVb
             }
-
+            // HSV with Blue higher than Red
             ColorMode.HSV_COOL -> {
                 var hue = Random.nextFloat() * 360
                 var sat = 1f
@@ -177,7 +191,7 @@ data class SectionState(val id: Int = 0) {
                 this.bgColor.value = coolHSVa
                 this.textColor.value = coolHSVb
             }
-
+            // RGB color values at random
             ColorMode.RGB -> {
                 val max = 255
                 var red = Random.nextInt(0..max)
@@ -203,7 +217,7 @@ data class SectionState(val id: Int = 0) {
                 this.bgColor.value = warmColorRGBa
                 this.textColor.value = warmColorRGBb
             }
-
+            // HSV color values at random
             ColorMode.HSV -> {
                 var hue = Random.nextFloat() * 360
                 var sat = 1f
@@ -223,6 +237,9 @@ data class SectionState(val id: Int = 0) {
         }
     }
 
+    /**
+     * Toggle on or off the flashing lights in the application.
+     */
     fun toggleColorFlash() {
         isFlashing.value = !isFlashing.value
         if (!isFlashing.value) {
@@ -231,15 +248,33 @@ data class SectionState(val id: Int = 0) {
         }
     }
 
+    /**
+     * If color mode supports return if darkness filter is used.
+     *
+     * @return String for Darkness on or off or empty string
+     */
     fun getDarknessString(): String {
-        return if (addBlack.value) {
-            "With Darkness"
+        return if (colorMode.value == ColorMode.HSV_WARM ||
+            colorMode.value == ColorMode.HSV_COOL
+        ) {
+            if (addBlack.value) {
+                "With Darkness"
+            } else {
+                "No Darkness"
+            }
         } else {
-            "No Darkness"
+            ""
         }
     }
 
+    /**
+     * Set adding darkness to HSV_WARM or HSV_COOL color mode.
+     */
     fun toggleAddBlack() {
-        addBlack.value = !addBlack.value
+        if (colorMode.value == ColorMode.HSV_WARM ||
+            colorMode.value == ColorMode.HSV_COOL
+        ) {
+            addBlack.value = !addBlack.value
+        }
     }
 }

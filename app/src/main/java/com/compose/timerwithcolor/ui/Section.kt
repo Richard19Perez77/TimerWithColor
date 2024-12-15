@@ -20,6 +20,9 @@ import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Section composable contains the LaunchedEffect for the running timer and the call to update colors for background text. Id is used in base layout composable for testing.
+ */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Section(id: Int) {
