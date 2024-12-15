@@ -2,8 +2,7 @@
 
 Press Screen to Change Color and Watch Timer Run!
 
-
-https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/2e97a64e-c4c0-4e36-880f-33d005bf2e9f
+https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/d7b2c285-e584-4dfb-9717-cfa2ccd5a820
 
 ![Screenshot_20230830_185827](https://github.com/Richard19Perez77/TimerWithColor/assets/58344001/c814f973-1571-4e4a-a735-7042dd3bdb33)
 
