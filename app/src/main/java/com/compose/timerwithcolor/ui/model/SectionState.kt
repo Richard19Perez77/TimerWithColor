@@ -62,185 +62,209 @@ data class SectionState(val id: Int = 0) {
         when (this.colorMode.value) {
             // RGB with Blue as higher than Red
             ColorMode.RGB_COOL -> {
-                val max = 255
-                var red = Random.nextInt(0..max)
-                var blue = Random.nextInt(0..max)
-                var green = Random.nextInt(0..max)
-
-                while (red >= blue) {
-                    red = Random.nextInt(0..max)
-                    blue = Random.nextInt(0..max)
-                }
-
-                val warmColorRGBa = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                red = Random.nextInt(0..max)
-                blue = Random.nextInt(0..max)
-                green = Random.nextInt(0..max)
-
-                while (red < blue) {
-                    red = Random.nextInt(0..max)
-                    blue = Random.nextInt(0..max)
-                }
-
-                val warmColorRGBb = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                this.bgColor.value = warmColorRGBa
-                this.textColor.value = warmColorRGBb
+                colorModeUpdateRGBCool()
             }
             // RGB with Red higher than Blue
             ColorMode.RGB_WARM -> {
-                val max = 255
-                var red = Random.nextInt(0..max)
-                var blue = Random.nextInt(0..max)
-                var green = Random.nextInt(0..max)
-
-                while (red < blue) {
-                    red = Random.nextInt(0..max)
-                    blue = Random.nextInt(0..max)
-                }
-
-                val warmColorRGBa = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                red = Random.nextInt(0..max)
-                blue = Random.nextInt(0..max)
-                green = Random.nextInt(0..max)
-
-                while (red < blue) {
-                    red = Random.nextInt(0..max)
-                    blue = Random.nextInt(0..max)
-                }
-
-                val warmColorRGBb = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                this.bgColor.value = warmColorRGBa
-                this.textColor.value = warmColorRGBb
+                colorModeUpdateRGBWarm()
             }
             // HSV with Red higher than Blue
             ColorMode.HSV_WARM -> {
-                var hue = Random.nextFloat() * 360
-                var sat = 1f // Random.nextFloat()
-                var value = if (this.addBlack.value) {
-                    Random.nextFloat() * (1f - .10f) + .10f
-                } else {
-                    1f
-                }
-
-                while (hue > 90 && hue < 270) {
-                    hue = Random.nextFloat() * 360
-                }
-
-                val warmColorHSVa = Color.hsv(hue, sat, value)
-
-                hue = Random.nextFloat() * 360
-                sat = 1f
-                value = if (this.addBlack.value) {
-                    Random.nextFloat() * (1f - .10f) + .10f
-                } else {
-                    1f
-                }
-
-                while (hue > 90 && hue < 270) {
-                    hue = Random.nextFloat() * 360
-                }
-                val warmColorHSVb = Color.hsv(hue, sat, value)
-
-                this.bgColor.value = warmColorHSVa
-                this.textColor.value = warmColorHSVb
+                colorModeUpdateHSVWarm()
             }
             // HSV with Blue higher than Red
             ColorMode.HSV_COOL -> {
-                var hue = Random.nextFloat() * 360
-                var sat = 1f
-                var value = if (this.addBlack.value) {
-                    Random.nextFloat() * (1f - .10f) + .10f
-                } else {
-                    1f
-                }
-
-                while (hue < 90 || hue > 270) {
-                    hue = Random.nextFloat() * 360
-                }
-
-                val coolHSVa = Color.hsv(hue, sat, value)
-
-                hue = Random.nextFloat() * 360
-                sat = 1f
-                value = if (this.addBlack.value) {
-                    Random.nextFloat() * (1f - .10f) + .10f
-                } else {
-                    1f
-                }
-
-                while (hue < 90 || hue > 270) {
-                    hue = Random.nextFloat() * 360
-                }
-
-                val coolHSVb = Color.hsv(hue, sat, value)
-
-                this.bgColor.value = coolHSVa
-                this.textColor.value = coolHSVb
+                colorModeUpdateHSVCool()
             }
             // RGB color values at random
             ColorMode.RGB -> {
-                val max = 255
-                var red = Random.nextInt(0..max)
-                var blue = Random.nextInt(0..max)
-                var green = Random.nextInt(0..max)
-
-                val warmColorRGBa = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                red = Random.nextInt(0..max)
-                blue = Random.nextInt(0..max)
-                green = Random.nextInt(0..max)
-
-                val warmColorRGBb = Color(
-                    red = red,
-                    blue = blue,
-                    green = green
-                )
-
-                this.bgColor.value = warmColorRGBa
-                this.textColor.value = warmColorRGBb
+                colorModeUpdateRGB()
             }
             // HSV color values at random
             ColorMode.HSV -> {
-                var hue = Random.nextFloat() * 360
-                var sat = 1f
-                var value = 1f
-
-                val coolHSVa = Color.hsv(hue, sat, value)
-
-                hue = Random.nextFloat() * 360
-                sat = 1f
-                value = 1f
-
-                val coolHSVb = Color.hsv(hue, sat, value)
-
-                this.bgColor.value = coolHSVa
-                this.textColor.value = coolHSVb
+                colorModeUpdateHSV()
             }
         }
+    }
+
+    private fun colorModeUpdateHSV() {
+        var hue = Random.nextFloat() * 360
+        var sat = 1f
+        var value = 1f
+
+        val coolHSVa = Color.hsv(hue, sat, value)
+
+        hue = Random.nextFloat() * 360
+        sat = 1f
+        value = 1f
+
+        val coolHSVb = Color.hsv(hue, sat, value)
+
+        this.bgColor.value = coolHSVa
+        this.textColor.value = coolHSVb
+    }
+
+    private fun colorModeUpdateRGB() {
+        val max = 255
+        var red = Random.nextInt(0..max)
+        var blue = Random.nextInt(0..max)
+        var green = Random.nextInt(0..max)
+
+        val warmColorRGBa = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        red = Random.nextInt(0..max)
+        blue = Random.nextInt(0..max)
+        green = Random.nextInt(0..max)
+
+        val warmColorRGBb = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        this.bgColor.value = warmColorRGBa
+        this.textColor.value = warmColorRGBb
+    }
+
+    private fun colorModeUpdateHSVCool() {
+        var hue = Random.nextFloat() * 360
+        var sat = 1f
+        var value = if (this.addBlack.value) {
+            Random.nextFloat() * (1f - .10f) + .10f
+        } else {
+            1f
+        }
+
+        while (hue < 90 || hue > 270) {
+            hue = Random.nextFloat() * 360
+        }
+
+        val coolHSVa = Color.hsv(hue, sat, value)
+
+        hue = Random.nextFloat() * 360
+        sat = 1f
+        value = if (this.addBlack.value) {
+            Random.nextFloat() * (1f - .10f) + .10f
+        } else {
+            1f
+        }
+
+        while (hue < 90 || hue > 270) {
+            hue = Random.nextFloat() * 360
+        }
+
+        val coolHSVb = Color.hsv(hue, sat, value)
+
+        this.bgColor.value = coolHSVa
+        this.textColor.value = coolHSVb
+    }
+
+    private fun colorModeUpdateHSVWarm() {
+        var hue = Random.nextFloat() * 360
+        var sat = 1f // Random.nextFloat()
+        var value = if (this.addBlack.value) {
+            Random.nextFloat() * (1f - .10f) + .10f
+        } else {
+            1f
+        }
+
+        while (hue > 90 && hue < 270) {
+            hue = Random.nextFloat() * 360
+        }
+
+        val warmColorHSVa = Color.hsv(hue, sat, value)
+
+        hue = Random.nextFloat() * 360
+        sat = 1f
+        value = if (this.addBlack.value) {
+            Random.nextFloat() * (1f - .10f) + .10f
+        } else {
+            1f
+        }
+
+        while (hue > 90 && hue < 270) {
+            hue = Random.nextFloat() * 360
+        }
+        val warmColorHSVb = Color.hsv(hue, sat, value)
+
+        this.bgColor.value = warmColorHSVa
+        this.textColor.value = warmColorHSVb
+    }
+
+    private fun colorModeUpdateRGBWarm() {
+        val max = 255
+        var red = Random.nextInt(0..max)
+        var blue = Random.nextInt(0..max)
+        var green = Random.nextInt(0..max)
+
+        while (red < blue) {
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+        }
+
+        val warmColorRGBa = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        red = Random.nextInt(0..max)
+        blue = Random.nextInt(0..max)
+        green = Random.nextInt(0..max)
+
+        while (red < blue) {
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+        }
+
+        val warmColorRGBb = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        this.bgColor.value = warmColorRGBa
+        this.textColor.value = warmColorRGBb
+    }
+
+    private fun colorModeUpdateRGBCool() {
+        val max = 255
+        var red = Random.nextInt(0..max)
+        var blue = Random.nextInt(0..max)
+        var green = Random.nextInt(0..max)
+
+        while (red >= blue) {
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+        }
+
+        val warmColorRGBa = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        red = Random.nextInt(0..max)
+        blue = Random.nextInt(0..max)
+        green = Random.nextInt(0..max)
+
+        while (red < blue) {
+            red = Random.nextInt(0..max)
+            blue = Random.nextInt(0..max)
+        }
+
+        val warmColorRGBb = Color(
+            red = red,
+            blue = blue,
+            green = green
+        )
+
+        this.bgColor.value = warmColorRGBa
+        this.textColor.value = warmColorRGBb
     }
 
     /**
