@@ -13,7 +13,13 @@ import com.compose.timerwithcolor.ui.Section
 import com.compose.timerwithcolor.ui.theme.TimerWithColorTheme
 
 /**
- * The MainActivity class holds the container for the Section composable. It can be extended to hold multiple Sections, as long as the id is separate it will update accordingly. Id is used for testing an finding specific composable.
+ * MainActivity serves as the entry point of the application and provides the UI layout
+ * for the main screen using Jetpack Compose.
+ *
+ * The activity sets up a themed container (`TimerWithColorTheme`) and organizes its
+ * composable content using a `Column` layout. Each row within the column represents a
+ * `Section` composable, identified by a unique ID. This setup ensures that multiple
+ * sections can be added and updated dynamically while supporting testing capabilities.
  */
 class MainActivity : BaseActivity() {
 

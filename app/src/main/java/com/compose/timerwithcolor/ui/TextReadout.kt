@@ -18,7 +18,19 @@ import androidx.compose.ui.unit.sp
 import com.compose.timerwithcolor.R
 
 /**
- * TextReadout is a composable to hold the readout of the current Color Mode, Time of day, and Darkness Text.
+ * TextReadout is a composable function that displays three pieces of information:
+ * 1. The current color mode (`tempColor`).
+ * 2. The formatted time (`text`).
+ * 3. The state of darkness (`hasDarkness`).
+ *
+ * This composable arranges the text elements vertically using a `Column` layout. Each text
+ * element has specific styling, and unique test tags are assigned for UI testing.
+ *
+ * @param id A unique identifier for the section this readout belongs to.
+ * @param textColor The color used for rendering all the text elements.
+ * @param tempColor The name of the current color mode (e.g., "RGB Cool").
+ * @param hasDarkness A string describing the darkness state (e.g., "With Darkness").
+ * @param text The formatted time string to be displayed.
  */
 @Composable
 fun TextReadout(id: Int, textColor: Color, tempColor: String, hasDarkness: String, text: String) {

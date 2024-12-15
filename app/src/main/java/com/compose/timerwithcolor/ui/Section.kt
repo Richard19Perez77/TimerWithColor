@@ -21,7 +21,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * Section composable contains the LaunchedEffect for the running timer and the call to update colors for background text. Id is used in base layout composable for testing.
+ * The Section composable represents an interactive section with dynamic behavior, including
+ * a timer, background color updates, and support for user interactions like single-click,
+ * long-click, and double-click.
+ *
+ * @param id A unique identifier for the Section, used for testing and distinguishing instances.
  */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable

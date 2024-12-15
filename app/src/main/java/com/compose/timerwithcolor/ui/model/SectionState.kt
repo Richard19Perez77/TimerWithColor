@@ -10,7 +10,13 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 /**
- * Data Class SectionState holds the variables for each Section composable and does the work to transform text as needed and find new colors as needed.
+ * SectionState represents the state and behavior of a single Section composable.
+ *
+ * This class manages dynamic properties like the current color mode, flashing behavior,
+ * background and text colors, and time updates. It provides functions to toggle features
+ * like color flashing, add a darkness filter, and rotate through color modes.
+ *
+ * @param id A unique identifier for the Section this state belongs to.
  */
 data class SectionState(val id: Int = 0) {
 
